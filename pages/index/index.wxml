@@ -11,19 +11,19 @@
               <view class="weui-grid__icon">
                   <view src="./images/icon_tabbar.png" alt=""></view>
               </view>
-              <view class="weui-grid__label">安装手册</view>
+               <view class="swiper-tab-item {{currentTab==0?'active':''}}" data-current="0" bindtap="clickTab">安装手册</view>
           </view>
           <view href="javascript:;" class="weui-grid">
               <view class="weui-grid__icon">
                   <view src="./images/icon_tabbar.png" alt=""></view>
               </view>
-              <view class="weui-grid__label">图片采集</view>
+              <view class="swiper-tab-item {{currentTab==1?'active':''}}" data-current="1" bindtap="clickTab">图片采集</view>
           </view>
           <view href="javascript:;" class="weui-grid">
               <view class="weui-grid__icon">
                   <view src="./images/icon_tabbar.png" alt=""></view>
               </view>
-              <view class="weui-grid__label">用户反馈</view>
+              <view class="swiper-tab-item {{currentTab==2?'active':''}}" data-current="2" bindtap="clickTab">用户反馈</view>
           </view>
       </view>
       <view class='page__bd page__bd_spacing'>
@@ -32,5 +32,20 @@
           </view>
       </view>
     </section>
+
+<swiper current="{{currentTab}}" duration="300"  bindchange="swiperTab">
+    <swiper-item ><view>
+     <include src="manual.wxml" />
+    </view></swiper-item>
+   
+    <swiper-item><view>
+    <include src="photo.wxml" />
+    </view></swiper-item>
+
+    <swiper-item><view>
+    <include src="feedback.wxml" />
+    </view></swiper-item>
+</swiper>
+
   </view>
 </view>

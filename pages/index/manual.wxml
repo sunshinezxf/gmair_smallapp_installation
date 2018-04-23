@@ -1,0 +1,4 @@
+<!--pages/manual/manual.wxml-->
+<text>安装手册页面</text>
+<image src="http://ww4.sinaimg.cn/bmiddle/006q8Q6bjw1fbwucs1cctj30t80t8myh.jpg" bindLoad="imageLoad" style="width:{{imageSize[0].width}}rpx; height:{{imageSize[0].height}}rpx" data-index="0" mode="scaleToFill"/>
+<image src="http://ww4.sinaimg.cn/bmiddle/006q8Q6bjw1fbwucs1cctj30t80t8myh.jpg" bindLoad="imageLoad" style="width:{{imageSize[1].width}}rpx; height:{{imageSize[1].height}}rpx" data-index="1" mode="scaleToFill"/>

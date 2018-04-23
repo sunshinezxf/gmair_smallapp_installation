@@ -1,0 +1,17 @@
+ <form bindsubmit="feedSubmit">
+  <text class="page__desc">状态</text>
+     <radio-group class="radio-group" bindchange="radioChange">
+       <radio class="radio" wx:for-items="{{items}}" wx:key="name" value="{{item.name}}" checked="{{item.checked}}">
+          <text>{{item.value}}</text>
+         </radio>
+      </radio-group>
+
+  <text class="page__desc">原因</text>
+     <radio-group class="radio-group" bindchange="radioChange">
+       <radio class="radio" wx:for-items="{{reasons}}" wx:key="name" value="{{item.name}}" checked="{{item.checked}}">
+          <text>{{item.value}}</text>
+         </radio>
+      </radio-group>
+  <button class="btn_login"  formType="submit">提交</button>
+
+ </form>
