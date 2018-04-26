@@ -1,1 +1,6 @@
-<text>采集7张图片页面</text>
+<!-- <view class="ptext">选择图片上传</view> -->
+<!-- <view>{{scanurl}}</view> -->
+<form bindsubmit="bindSaveTap">
+<image catchtap="chooseImageTap" class="scanimg" src="{{logo}}"></image> 
+<button  size="default" formType="submit">保存</button>
+</form>
