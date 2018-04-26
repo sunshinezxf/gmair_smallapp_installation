@@ -1,7 +1,7 @@
 
   <form bindsubmit="scanSubmit">
   <image bindtap="scanclick" class="scanimg" src="../image/scan.png">点我扫一扫</image>    
- <input placeholder="手动输入二维码" value="{{show}}"/> 
-  <button class="btn_login"  bindtap="subCode">提交</button>
+ <input placeholder="手动输入二维码" value="{{show}}" name="scaninput" class="input"/> 
+  <button formType="submit">提交</button>
  </form>
 

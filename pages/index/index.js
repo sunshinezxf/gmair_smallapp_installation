@@ -26,6 +26,8 @@ Page({
     ],
     index: 0,
     currentTab: 0,
+    imageWidth: 110,
+    img_arr:[],
     items: [
       { name: '1', value: '延迟安装', checked: 'true' },
       { name: '2', value: '取消安装', },
@@ -40,7 +42,7 @@ Page({
       gpshow:"none"
     },
   },
-  show: "", 
+  show: "",
   scanurl: null,
   radioChange: function (e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value)
@@ -165,24 +167,28 @@ Page({
   scanclick: function () {
     var that = this;
     var show;
+    var arr=[];
     wx.scanCode({
       success: (res) => {
         this.show =  res.result;
         this.scanurl=res.result;
-        that.setData({
-          show: this.show,
-          scanurl: res.result
-        })
-        wx.showToast({
-          title: '成功',
-          icon: 'success',
-          duration: 2000
-        })
+        arr=this.show.split("/");
+        if(arr.length>0){
+          that.setData({
+            show: arr[arr.length-1],
+            scanurl: res.result
+          })
+          wx.showToast({
+            title: '成功',
+            icon: 'success',
+            duration: 2000
+          })
+        }
       },
       fail: (res) => {
         wx.showToast({
-          title: '失败',
-          icon: 'fail',
+          title: '扫描失败',
+          icon: 'none',
           duration: 2000
         })
       },
@@ -190,82 +196,98 @@ Page({
       }
     })
   },
-  subCode: function () {
+  scanSubmit: function (e) {
     var that = this;
+    var value = e.detail.value.scaninput;
+    if(value==""){
+      wx.showToast({
+        title: '请输入二维码',
+        icon: 'none',
+        duration: 2000
+      })
+    }else{
+    console.log("value " + value);
+    console.log("imageWidth" + that.data.imageWidth);
     that.setData({
       config: {
         pvshow: "none",
         gpshow: ""
       },
     })
+  }
   },
-  bindSaveTap: function (e) {
-    console.log(e)
-    var formData = {
-      uid: util.getUserID(),
-    }
-    console.log(formData)
-    app.apiFunc.upload_file(app.apiUrl.modify_user, this.data.logo, 'photos', formData,
-      function (res) {
-        console.log(res);
-      },
-      function () {
-      })
-  },  
 
-  chooseImageTap: function () {
-    let _this = this;
-    wx.showActionSheet({
-      itemList: ['从相册中选择', '拍照'],
-      itemColor: "#f7982a",
-      success: function (res) {
-        if (!res.cancel) {
-          if (res.tapIndex == 0) {
-            _this.chooseWxImage('album')
-          } else if (res.tapIndex == 1) {
-            _this.chooseWxImage('camera')
-          }
-        }
-      }
-    })
+  upconfirm: function () {
+    this.up(0);
   },
-  chooseWxImage: function (type) {
-    let _this = this;
-    wx.chooseImage({
-      sizeType: ['original', 'compressed'],
-      sourceType: [type],
+  up: function (i) {
+    var that = this;
+    var data = {
+      // openid: app.openid,
+      // program_id: app.program_id,
+     //  only_num: only_num
+    }
+    wx.uploadFile({
+      url: 'pg.php/Aishen/upload_photo',
+      filePath: that.data.img_arr[i],
+      name: 'image', //文件对应的参数名字(key)  
+      formData: data,  //其它的表单信息  
       success: function (res) {
-        console.log(res);
-        _this.setData({
-          logo: res.tempFilePaths[0],
+        i++
+        if (i == that.data.img_arr.length) {
+            console.log(res)
+              wx.showModal({
+                title: '提示',
+                content: '提交成功!',
+                success: function (res) {
+                  that.onLoad()
+                  wx.navigateBack({
+                    delta: 1
+                  })
+                }
+              })
+        } else if (i < that.data.img_arr.length) {//若图片还没有传完，则继续调用函数  
+          that.up(i)
+        }
+      },
+      fail:function(res){
+        wx.showModal({
+          title: '提示',
+          icon: 'none',
+          content: '提交失败,请重新提交!',
         })
       }
     })
-  },
-  //上传文件
-  upload_file: function (url, filePath, name, formData, success, fail) {
-    console.log('a=' + filePath)
-wx.uploadFile({
-      url: rootUrl + url,
-      filePath: filePath,
-      name: name,
-      header: {
-        'content-type': 'multipart/form-data'
-      }, // 设置请求的 header
-      formData: formData, // HTTP 请求中其他额外的 form data
-      success: function (res) {
-        console.log(res);
-        if (res.statusCode == 200 && !res.data.result_code) {
-          typeof success == "function" && success(res.data);
-        } else {
-          typeof fail == "function" && fail(res);
+  },  
+  upimg: function () {
+    var that = this;
+    if (this.data.img_arr.length < 8) {
+      wx.chooseImage({
+        sizeType: ['original'],
+        success: function (res) {
+          that.setData({
+            img_arr: that.data.img_arr.concat(res.tempFilePaths)
+          })
+          // num = that.data.img_arr.length
         }
-      },
-      fail: function (res) {
-        console.log(res);
-        typeof fail == "function" && fail(res);
-      }
-    })
+      });
+      wx.previewImage({
+        urls: that.data.images
+      });
+    } else {
+      wx.showToast({
+        title: '最多上传7张图片',
+        icon: 'loading',
+        duration: 3000
+      });
+    }
+  }, 
+  deleteImg: function (e) {
+    var imgs = this.data.img_arr; 
+    var index = e.currentTarget.dataset.index; 
+    imgs.splice(index, 1);        
+    this.setData({ img_arr: imgs }); 
+    console.log("delete"+index);
   }
 })
 
