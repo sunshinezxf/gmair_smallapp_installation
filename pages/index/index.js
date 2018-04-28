@@ -6,36 +6,19 @@ Page({
    */
   data: {
     array: ['美国', '中国', '巴西', '日本'],
-    objectArray: [
-      {
-        id: 0,
-        name: '美国'
-      },
-      {
-        id: 1,
-        name: '中国'
-      },
-      {
-        id: 2,
-        name: '巴西'
-      },
-      {
-        id: 3,
-        name: '日本'
-      }
-    ],
+    taskvalue:[],
     index: 0,
     currentTab: 0,
     imageWidth: 110,
     img_arr:[],
     items: [
-      { name: '1', value: '延迟安装', checked: 'true' },
-      { name: '2', value: '取消安装', },
+      { name: '延迟安装', value: '延迟安装', checked: 'true' },
+      { name: '取消安装', value: '取消安装', },
     ],
     reasons: [
-      { name: '1', value: '和用户协商推迟', checked: 'true' },
-      { name: '2', value: '用户要求推迟'},
-      { name: '3', value: '用户要求取消'},
+      { name: '和用户协商推迟', value: '和用户协商推迟', checked: 'true' },
+      { name: '用户要求推迟', value: '用户要求推迟'},
+      { name: '用户要求取消', value: '用户要求取消'},
     ],
     config: {
       pvshow: "",
@@ -43,6 +26,8 @@ Page({
     },
   },
   show: "",
+  openid: "",
+  token:"",
   scanurl: null,
   radioChange: function (e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value)
@@ -59,68 +44,49 @@ Page({
    */
   onLoad: function (options) {
     var that = this
+    wx.getStorage({
+      key: 'openid',
+      success: function (res) {
+        that.openid = res.data;
+      },
+    }),
+      wx.getStorage({
+        key: 'token',
+        success: function (res) {
+          that.token = res.data;
+        },
+      })
+    //获取任务列表
+    wx.request({
+      url: 'https://microservice.gmair.net/installation/assign/feedbacklist',
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+      },
+      method: "GET",
+      data: {wechatId:that.openid},
+      success: function (res) {
+        if (res.responseCode=="ResponseCode.RESPONSE_OK"){
+          that.setData({
+            array: res.data.data,
+            taskvalue: res.data.value
+          })
+        }
+      }
+    }),
     that.setData({
       logo: "../image/upload.png"
     })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-    
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-    
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-    
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-    
-  },
   feedSubmit: function (e) {  
     console.log('form发生了submit事件，携带数据为：', e.detail.value);
     wx.request({
-      url: 'https://shop.com/home/Login/register',
+      url: 'https://microservice.gmair.net/installation/feedback/create',
       header: {
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
       },
       method: "POST",
-      data: { task: e.detail.value.taskPicker, state: e.detail.value.stateRadio, reason: e.detail.value.reasonRadio },
+      data: { assignId: e.detail.value.taskPicker, memberPhone: e.detail.value.phoneinput, status: e.detail.value.stateRadio, feedbackContent: e.detail.value.reasonRadio },
       success: function (res) {
         if (res.data.status == 0) {
           wx.showToast({
@@ -206,14 +172,69 @@ Page({
         duration: 2000
       })
     }else{
-    console.log("value " + value);
-    console.log("imageWidth" + that.data.imageWidth);
-    that.setData({
-      config: {
-        pvshow: "none",
-        gpshow: ""
-      },
-    })
+      wx.request({
+        url: 'https://microservice.gmair.net/installation/assign/qrcode',
+        header: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+        },
+        method: "POST",
+        data: {qrcode:value},
+        success: function (res) {
+          if (res.responseCode=="RESPONSE_OK"){//二维码是存在的
+            that.setData({
+              config: {
+                pvshow: "none",
+                gpshow: ""
+              },
+            })
+          } else if (res.responseCode=="RESPONSE_NULL"){//带货安装
+          var orderid = res.data.orderid;
+            wx.showModal({
+              title: '提示',
+              content: '是否是带货安装？',
+              success: function (res) {
+                if (res.confirm) {
+                  wx.request({
+                    url: 'https://microservice.gmair.net/installation/assign/withmachine',
+                    header: {
+                      "Content-Type": "application/x-www-form-urlencoded;"
+                    },
+                    method: "POST",
+                    data: { wechatId: this.openid, qrcode:value},
+                    success: function (res) {
+                      that.setData({
+                        config: {
+                          pvshow: "none",
+                          gpshow: ""
+                        },
+                      })
+                    }
+                  })
+                } else {
+                  wx.showToast({
+                    title: '请重新扫描二维码',
+                    duration: 1500
+                  })
+                }
+              }
+            })
+          }else{//不存在
+            wx.showToast({
+              title: '二维码不存在！',
+              icon: 'loading',
+              duration: 1500
+            })
+          }
+        },
+        fail: function () {
+          wx.showToast({
+            title: '服务器网络错误!',
+            icon: 'loading',
+            duration: 1500
+          })
+        }
+      })
+   
   }
   },
 
@@ -228,9 +249,9 @@ Page({
      //  only_num: only_num
     }
     wx.uploadFile({
-      url: 'pg.php/Aishen/upload_photo',
+      url: 'https://microservice.gmair.net/installation/pic/upload',
       filePath: that.data.img_arr[i],
-      name: 'image', //文件对应的参数名字(key)  
+      name: 'fileName', //文件对应的参数名字(key)  
       formData: data,  //其它的表单信息  
       success: function (res) {
         i++
@@ -288,6 +309,7 @@ Page({
     imgs.splice(index, 1);        
     this.setData({ img_arr: imgs }); 
     console.log("delete"+index);
-  }
+  },
+    
 })
 
