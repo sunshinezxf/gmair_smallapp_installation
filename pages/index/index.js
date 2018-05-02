@@ -6,10 +6,12 @@ Page({
    */
   data: {
     array: ['美国', '中国', '巴西', '日本'],
+    picpath:[],
     taskvalue:[],
     index: 0,
     currentTab: 0,
     imageWidth: 110,
+    qrcode:"",
     img_arr:[],
     items: [
       { name: '延迟安装', value: '延迟安装', checked: 'true' },
@@ -67,7 +69,7 @@ Page({
       success: function (res) {
         if (res.responseCode=="ResponseCode.RESPONSE_OK"){
           that.setData({
-            array: res.data.data,
+            array: res.data,
             taskvalue: res.data.value
           })
         }
@@ -181,6 +183,7 @@ Page({
         data: {qrcode:value},
         success: function (res) {
           if (res.responseCode=="RESPONSE_OK"){//二维码是存在的
+            this.data.qrcode = value;
             that.setData({
               config: {
                 pvshow: "none",
@@ -202,6 +205,7 @@ Page({
                     method: "POST",
                     data: { wechatId: this.openid, qrcode:value},
                     success: function (res) {
+                      this.data.qrcode = value;
                       that.setData({
                         config: {
                           pvshow: "none",
@@ -239,7 +243,18 @@ Page({
   },
 
   upconfirm: function () {
-    this.up(0);
+ //   this.up(0);
+    wx.request({
+      url: 'https://microservice.gmair.net/installation/snapshot/create',
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded;"
+      },
+      method: "POST",
+      data: { wechatId: this.openid, qrcode: this.data.qrcode, picPath: picpath.toString()},
+      success: function (res) {
+        console.log("成功保存路径");
+      }
+    })
   },
   up: function (i) {
     var that = this;
@@ -261,7 +276,12 @@ Page({
                 title: '提示',
                 content: '提交成功!',
                 success: function (res) {
-                  that.onLoad()
+                  that.onLoad();
+                  var path = res.data;
+                  var newPic = [path];
+                  this.setData({
+                    'picpath': this.data.list.concat(newPic)
+                  });
                   wx.navigateBack({
                     delta: 1
                   })
@@ -295,6 +315,7 @@ Page({
       wx.previewImage({
         urls: that.data.images
       });
+      this.up(0);
     } else {
       wx.showToast({
         title: '最多上传7张图片',
@@ -307,6 +328,7 @@ Page({
     var imgs = this.data.img_arr; 
     var index = e.currentTarget.dataset.index; 
     imgs.splice(index, 1);        
+    this.data.picpath.splice(index, 1);
     this.setData({ img_arr: imgs }); 
     console.log("delete"+index);
   },
