@@ -1,5 +1,7 @@
- <form bindsubmit="phonebind">
-<text>请绑定手机号</text>
-<input name="bindphone" class="input"/> 
-<button formType="submit">提交</button>
-</form>
+<view class="phoneView">
+  <form bindsubmit="phonebind">
+    <text>请绑定手机号</text>
+    <input name="bindphone" class="input"/> 
+    <button formType="submit">提交</button>
+  </form>
+</view>

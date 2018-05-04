@@ -1,6 +1,13 @@
+
 .input{
   height:80rpx;
   border-bottom:1rpx solid #ddd;
   border-top:1rpx solid #ddd;
   margin-bottom:10rpx;
+}
+.phoneView{
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 40rpx;
+  margin-top:30%;
 }
