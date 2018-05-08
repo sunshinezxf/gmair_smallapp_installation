@@ -41,17 +41,15 @@ App({
                     client_id:"client_2"
                   },
                   success: function (res) {
-                    console.log("res error:"+res.data.error);
-                    if (res.data.error !="invalid_grant"){
                       var token = res.data.access_token;
                       if (token != "" && token != null) {
+                        console.log("token" + token);
                         wx.setStorage({
                           key: "token",
                           data: token
                         })
                       }
                     }
-                  }
                 })
               }
             }, fail: function (res){

@@ -33,7 +33,8 @@ Page({
       method: "POST",
       data: { memberPhone: e.detail.value.bindphone, wechatId:that.openid },
       success: function (res) {
-        if (res.responseCode==("RESPONSE_OK")){
+        if (res.data.responseCode=="RESPONSE_OK"){
+          console.log(res);
           wx.redirectTo({
             url: '/pages/index/index'
           })

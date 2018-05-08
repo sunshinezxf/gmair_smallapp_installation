@@ -6,6 +6,7 @@ Page({
    */
   data: {
     array: ['美国', '中国', '巴西', '日本'],
+    assignArr:[],
     picpath:[],
     taskvalue:[],
     index: 0,
@@ -26,10 +27,11 @@ Page({
       pvshow: "",
       gpshow:"none"
     },
+    openid: "123",
+    token: "",
+    picpath:"",
   },
   show: "",
-  openid: "",
-  token:"",
   scanurl: null,
   radioChange: function (e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value)
@@ -45,61 +47,77 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log("onload");
     var that = this
     wx.getStorage({
       key: 'openid',
       success: function (res) {
-        that.openid = res.data;
+        that.setData({
+          openid: res.data
+        })
       },
     }),
       wx.getStorage({
         key: 'token',
         success: function (res) {
-          that.token = res.data;
-        },
-      })
-    //获取任务列表
-    wx.request({
-      url: 'https://microservice.gmair.net/installation/assign/feedbacklist',
-      header: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
-      },
-      method: "GET",
-      data: {wechatId:that.openid},
-      success: function (res) {
-        if (res.responseCode=="ResponseCode.RESPONSE_OK"){
           that.setData({
-            array: res.data,
-            taskvalue: res.data.value
+            token: res.data
           })
-        }
-      }
-    }),
+          //获取任务列表
+          wx.request({
+            url: 'https://microservice.gmair.net/install-mp/assign/feedbacklist',
+            header: {
+              "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+            },
+            method: "GET",
+            data: { wechatId: that.data.openid, access_token: that.data.token },
+            success: function (res) {
+              if (res.data.responseCode == "RESPONSE_OK") {
+               var utils = require('../../utils/util.js')
+                var tmparray=res.data.data;
+                var namearray = [];
+                var assignid_arr = [];
+                for (var index in tmparray) {
+                  var time = utils.formatTime(tmparray[index].assignDate / 1000, 'Y/M/D h:m:s')
+                  namearray[index] = tmparray[index].consumerConsignee + " " + time;
+                  assignid_arr[index] = tmparray[index].assignId
+                }
+                that.setData({
+                  array: namearray,
+                  assignArr: assignid_arr
+                })
+              }
+            }
+          })
+        },
+      }),
+
     that.setData({
       logo: "../image/upload.png"
     })
   },
 
   feedSubmit: function (e) {  
-    console.log('form发生了submit事件，携带数据为：', e.detail.value);
+    var that = this
+    console.log("feed参数"+that.data.assignArr[e.detail.value.taskPicker]);
     wx.request({
-      url: 'https://microservice.gmair.net/installation/feedback/create',
+      url: 'https://microservice.gmair.net/install-mp/feedback/create',
       header: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
       },
       method: "POST",
-      data: { assignId: e.detail.value.taskPicker, memberPhone: e.detail.value.phoneinput, status: e.detail.value.stateRadio, feedbackContent: e.detail.value.reasonRadio },
+      data: { assignId: that.data.assignArr[e.detail.value.taskPicker], memberPhone: e.detail.value.phoneinput, status: e.detail.value.stateRadio, feedbackContent: e.detail.value.reasonRadio, access_token: that.data.token},
       success: function (res) {
-        if (res.data.status == 0) {
+        if (res.data.responseCode == "RESPONSE_OK") {
           wx.showToast({
-            title: res.data.info,
+            title: "反馈成功",
             icon: 'loading',
-            duration: 1500
+            duration: 1000
           })
         } else {
           wx.showToast({
-            title: res.data.info,//这里打印出登录成功
-            icon: 'success',
+            title: "反馈失败",
+            icon: 'fail',
             duration: 1000
           })
         }
@@ -108,7 +126,7 @@ Page({
         wx.showToast({
           title: '服务器网络错误!',
           icon: 'loading',
-          duration: 1500
+          duration: 1000
         })
       }
     })
@@ -149,7 +167,7 @@ Page({
           wx.showToast({
             title: '成功',
             icon: 'success',
-            duration: 2000
+            duration: 1000
           })
         }
       },
@@ -157,7 +175,7 @@ Page({
         wx.showToast({
           title: '扫描失败',
           icon: 'none',
-          duration: 2000
+          duration: 1000
         })
       },
       complete: (res) => {
@@ -174,50 +192,53 @@ Page({
         duration: 2000
       })
     }else{
+      console.log("scansubmit" + that.data.token);
       wx.request({
-        url: 'https://microservice.gmair.net/installation/assign/qrcode',
+        url: 'https://microservice.gmair.net/install-mp/assign/qrcode',
         header: {
           "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
         },
-        method: "POST",
-        data: {qrcode:value},
+        method: "GET",
+        data: { qrcode: value, access_token: that.data.token},
         success: function (res) {
-          if (res.responseCode=="RESPONSE_OK"){//二维码是存在的
-            this.data.qrcode = value;
+         // console.log(JSON.stringify(res));
+          if (res.data.responseCode == "RESPONSE_OK"){//二维码是存在的
             that.setData({
               config: {
                 pvshow: "none",
                 gpshow: ""
               },
+              qrcode:value
             })
-          } else if (res.responseCode=="RESPONSE_NULL"){//带货安装
+          } else if (res.data.responseCode=="RESPONSE_NULL"){//带货安装
           var orderid = res.data.orderid;
+          //console.log("qrcode "+value);
             wx.showModal({
               title: '提示',
               content: '是否是带货安装？',
               success: function (res) {
                 if (res.confirm) {
                   wx.request({
-                    url: 'https://microservice.gmair.net/installation/assign/withmachine',
+                    url: 'https://microservice.gmair.net/install-mp/assign/withmachine',
                     header: {
                       "Content-Type": "application/x-www-form-urlencoded;"
                     },
                     method: "POST",
-                    data: { wechatId: this.openid, qrcode:value},
+                    data: { wechatId: that.data.openid, qrcode: value, access_token: that.data.token},
                     success: function (res) {
-                      this.data.qrcode = value;
                       that.setData({
                         config: {
                           pvshow: "none",
                           gpshow: ""
                         },
+                        qrcode:value
                       })
                     }
                   })
                 } else {
                   wx.showToast({
                     title: '请重新扫描二维码',
-                    duration: 1500
+                    duration: 1000
                   })
                 }
               }
@@ -226,7 +247,7 @@ Page({
             wx.showToast({
               title: '二维码不存在！',
               icon: 'loading',
-              duration: 1500
+              duration: 1000
             })
           }
         },
@@ -234,53 +255,37 @@ Page({
           wx.showToast({
             title: '服务器网络错误!',
             icon: 'loading',
-            duration: 1500
+            duration: 1000
           })
         }
       })
    
   }
   },
-
-  upconfirm: function () {
- //   this.up(0);
-    wx.request({
-      url: 'https://microservice.gmair.net/installation/snapshot/create',
-      header: {
-        "Content-Type": "application/x-www-form-urlencoded;"
-      },
-      method: "POST",
-      data: { wechatId: this.openid, qrcode: this.data.qrcode, picPath: picpath.toString()},
-      success: function (res) {
-        console.log("成功保存路径");
-      }
-    })
-  },
   up: function (i) {
     var that = this;
     var data = {
-      // openid: app.openid,
-      // program_id: app.program_id,
-     //  only_num: only_num
+      access_token: that.data.token
     }
     wx.uploadFile({
-      url: 'https://microservice.gmair.net/installation/pic/upload',
+      url: 'https://microservice.gmair.net/install-mp/pic/upload',
       filePath: that.data.img_arr[i],
       name: 'fileName', //文件对应的参数名字(key)  
       formData: data,  //其它的表单信息  
       success: function (res) {
         i++
+        var path = res.data;
+        var newPic = [path];
         if (i == that.data.img_arr.length) {
-            console.log(res)
+          //  console.log(res)
               wx.showModal({
                 title: '提示',
                 content: '提交成功!',
                 success: function (res) {
                   that.onLoad();
-                  var path = res.data;
-                  var newPic = [path];
-                  this.setData({
-                    'picpath': this.data.list.concat(newPic)
+                  console.log("path " + path+" newpic"+newPic)
+                  that.setData({
+                    'picpath': that.data.picpath.concat(newPic)
                   });
                   wx.navigateBack({
                     delta: 1
@@ -308,14 +313,11 @@ Page({
         success: function (res) {
           that.setData({
             img_arr: that.data.img_arr.concat(res.tempFilePaths)
-          })
+          }),
+           that.up(0);
           // num = that.data.img_arr.length
         }
       });
-      wx.previewImage({
-        urls: that.data.images
-      });
-      this.up(0);
     } else {
       wx.showToast({
         title: '最多上传7张图片',
@@ -331,6 +333,29 @@ Page({
     this.data.picpath.splice(index, 1);
     this.setData({ img_arr: imgs }); 
     console.log("delete"+index);
+  },
+  upconfirm: function () {
+    //   this.up(0);
+    var that = this
+    wx.request({
+      url: 'https://microservice.gmair.net/install-mp/snapshot/create',
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded;"
+      },
+      method: "POST",
+      data: { wechatId: that.data.openid, qrcode: that.data.qrcode, picPath: that.data.picpath.toString(), access_token: that.data.token },
+      success: function (res) {
+        console.log("上传图片参数 picpath" + that.data.picpath.toString());
+        if (res.data.responseCode == "RESPONSE_OK") {
+          wx.showToast({
+            title: '成功',
+            icon: 'success',
+            duration: 1000
+          })
+          console.log("成功保存路径");
+        }
+      }
+    })
   },
     
 })
