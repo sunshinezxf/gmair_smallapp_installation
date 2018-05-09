@@ -270,7 +270,8 @@ Page({
     wx.uploadFile({
       url: 'https://microservice.gmair.net/install-mp/pic/upload',
       filePath: that.data.img_arr[i],
-      name: 'fileName', //文件对应的参数名字(key)  
+      name: 'fileName', //文件对应的参数名字(key) 
+      header: { "Content-Type": "multipart/form-data" }, 
       formData: data,  //其它的表单信息  
       success: function (res) {
         i++
