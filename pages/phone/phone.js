@@ -5,21 +5,15 @@ Page({
   openid: "",
   onLoad: function (options) {
     var that = this
-    wx.getStorage({
-      key: 'token',
-      success: function(res) {
-        wx.redirectTo({
-          url:'/pages/index/index'
-        }
-        );
-      }
-    }),
-    wx.getStorage({
-      key: 'openid',
-      success: function(res) {
-        that.openid=res.data;
-      },
-    })
+    var app = getApp()
+    var openid =  app.globalData.openid;
+    var token = app.globalData.token;
+    if(openid!=""&&token!=""){
+      wx.redirectTo({
+        url: '/pages/index/index'
+      })
+    }
+  
   },
   phonebind: function (e) {
     var that = this

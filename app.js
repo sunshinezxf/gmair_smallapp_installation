@@ -24,10 +24,8 @@ App({
               if(code=="RESPONSE_OK"){
                 var openid = res.data.data;
                 console.log("openid " + openid);
-                wx.setStorage({
-                  key: "openid",
-                  data: openid
-                })
+                var app = getApp()
+                app.globalData.openid = openid;
                 wx.request({
                   url: 'https://microservice.gmair.net/oauth/install/token',
                   header: {
@@ -45,10 +43,8 @@ App({
                       var token = res.data.access_token;
                       if (token != "" && token != null) {
                         console.log("token" + token);
-                        wx.setStorage({
-                          key: "token",
-                          data: token
-                        })
+                        var app = getApp()
+                        app.globalData.token = token;
                       }
                     }
                 })
