@@ -14,10 +14,14 @@ Page({
     })
   },
   up: function (i) {
+    wx.showLoading({
+      title: '上传中',
+    })
     var that = this;
     var data = {
       access_token: getApp().globalData.token
     }
+    // console.log("上传图片token" + getApp().globalData.token)
     wx.uploadFile({
       url: 'https://microservice.gmair.net/install-mp/pic/upload',
       filePath: that.data.img_arr[i],
@@ -30,11 +34,12 @@ Page({
         var newPic = [path];
         if (i == that.data.img_arr.length) {
           //  console.log(res)
+          wx.hideLoading({
+          })
           wx.showModal({
             title: '提示',
             content: '提交成功!',
             success: function (res) {
-           //   that.onLoad();
               console.log("path " + path + " newpic" + newPic)
               that.setData({
                 'picpath': that.data.picpath.concat(newPic)
@@ -112,4 +117,18 @@ Page({
       }
     })
   },
+  // 预览图片
+  previewImg: function (e) {
+    //获取当前图片的下标
+    var that = this
+    var index = e.currentTarget.dataset.index;
+    console.log("当前图片下标"+index);
+    //所有图片
+    var imgs = that.data.img_arr;
+    wx.previewImage({
+      //当前显示图片
+      current: imgs[index],
+      urls: imgs
+    })
+  }
 })
