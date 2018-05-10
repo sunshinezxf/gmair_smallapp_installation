@@ -1,0 +1,28 @@
+.container{
+  text-align: center
+}
+.txt{
+  margin-top:200rpx;
+  margin-bottom:40rpx;
+}
+.picker{
+    padding: 5rpx;
+    border-bottom:1rpx solid #ddd;
+    border-top:1rpx solid #ddd;
+    margin-bottom:10rpx;
+}
+.input{
+  height:80rpx;
+  border-bottom:1rpx solid #ddd;
+  border-top:1rpx solid #ddd;
+  margin-bottom:10rpx;
+}
+.radio-group {
+    border-bottom: 1rpx solid #ddd;
+    text-align: left;
+}
+.radio {
+    display: block;
+    border-top: 1rpx solid #ddd;
+    padding: 1rpx;
+}

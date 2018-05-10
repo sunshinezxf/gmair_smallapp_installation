@@ -1,7 +1,8 @@
 App({
   globalData: {
-    appid: 'wx95ce2e722268919b',//appid需自己提供，此处的appid我随机编写  
-
+    appid: 'wx95ce2e722268919b',
+    openid:"",
+    token:""
   }, 
   onLaunch: function () {
     wx.login({

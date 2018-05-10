@@ -1,5 +1,6 @@
 <!--pages/manual/manual.wxml-->
-<text>安装手册页面</text>
+<view class='container'>
+<view class="txt">请按照以下步骤安装</view>
 <image src="https://console.gmair.net/image/mannual/APP-01.jpg" bindLoad="imageLoad" style="width:{{imageSize[0].width}}rpx; height:{{imageSize[0].height}}rpx" data-index="0" mode="scaleToFill"/>
 <image src="https://console.gmair.net/image/mannual/APP-02.jpg" bindLoad="imageLoad" style="width:{{imageSize[1].width}}rpx; height:{{imageSize[1].height}}rpx" data-index="1" mode="scaleToFill"/>
 <image src="https://console.gmair.net/image/mannual/APP-03.jpg" bindLoad="imageLoad" style="width:{{imageSize[2].width}}rpx; height:{{imageSize[2].height}}rpx" data-index="2" mode="scaleToFill"/>
@@ -7,3 +8,4 @@
 <image src="https://console.gmair.net/image/mannual/APP-05.jpg" bindLoad="imageLoad" style="width:{{imageSize[4].width}}rpx; height:{{imageSize[4].height}}rpx" data-index="4" mode="scaleToFill"/>
 <image src="https://console.gmair.net/image/mannual/APP-06.jpg" bindLoad="imageLoad" style="width:{{imageSize[5].width}}rpx; height:{{imageSize[5].height}}rpx" data-index="5" mode="scaleToFill"/>
 <image src="https://console.gmair.net/image/mannual/APP-07.jpg" bindLoad="imageLoad" style="width:{{imageSize[6].width}}rpx; height:{{imageSize[6].height}}rpx" data-index="6" mode="scaleToFill"/>
+</view>

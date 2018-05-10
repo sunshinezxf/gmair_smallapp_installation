@@ -1,7 +1,11 @@
 {
   "pages": [
     "pages/phone/phone",
-    "pages/index/index"
+    "pages/index/index",
+    "pages/manual/manual",
+    "pages/photo/photo",
+    "pages/getphoto/getphoto",
+    "pages/feedback/feedback"
   ],
   "window": {
     "navigationBarTextStyle": "blue",

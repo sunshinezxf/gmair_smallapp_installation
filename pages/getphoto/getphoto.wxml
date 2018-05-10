@@ -1,0 +1,16 @@
+<view class='container'>
+<view class="txt">请上传安装图片</view>
+  <form bindsubmit="bindSaveTap">
+    <view class="gallery">
+      <view class="item" wx:for="{{img_arr}}" wx:key="index">
+        <image style="width: {{imageWidth}}px; height: {{imageWidth}}px" src=" {{item}}" bindtap="previewImage" mode="aspectFill" />
+        <!-- 删除按钮 -->
+        <view class="delete" bindtap="deleteImg" data-index="{{index}}"><image style="left: {{imageWidth / 2 - 10}}px;" src="../image/delete.png" /></view>
+      </view>
+      <view class="item">
+        <image style="width: {{imageWidth}}px; height: {{imageWidth}}px" src="../image/upload.png" class="scanimg" bindtap="upimg" />
+      </view>
+    </view>
+    <button bindtap="upconfirm">确定</button>  
+  </form>
+</view>

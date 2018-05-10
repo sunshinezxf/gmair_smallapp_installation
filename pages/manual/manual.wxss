@@ -1,0 +1,6 @@
+.container{
+  text-align: center
+}
+.txt{
+  margin: 10rpx;
+}

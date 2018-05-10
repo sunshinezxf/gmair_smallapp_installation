@@ -1,104 +1,29 @@
-.swiper-tab{
-    width: 100%;
-    border-bottom: 2rpx solid #ccc;
-    text-align: center;
-    height: 88rpx;
-    line-height: 88rpx;
+.menu_container {
     display: flex;
-    flex-flow: row;
-    justify-content: space-between;
-}
-.swiper-tab-item{
-    color:#434343;
-    text-align:center;
-    margin-top:5rpx;
-}
-.picker{
-    padding: 5rpx;
-    border-bottom:1rpx solid #ddd;
-    border-top:1rpx solid #ddd;
-    margin-bottom:10rpx;
-}
-
-.input{
-  height:80rpx;
-  border-bottom:1rpx solid #ddd;
-  border-top:1rpx solid #ddd;
-  margin-bottom:10rpx;
-}
-.btn_login{
-  margin:20rpx;
-}
-.ptext{
-  text-align:center;
-  margin-bottom: 5rpx;
-}
-.gallery {
-	/*margin-bottom: 100rpx;*/
-	display: flex;
-	justify-content: flex-start;
-	flex-wrap: wrap;
-}
-/*每张图片所占容器*/
-.item {
-	position: relative;
-	margin: 5px;
-}
-
-/*删除按钮*/
-.delete {
-	position: absolute;
-	height: 20px;
-	bottom: 0;
-	width: 100%;
-	background: #ccc;
-	opacity: .8;
-}
-
-.delete image {
-	position: absolute;
-	width: 20px;
-	height: 20px;
-}
-
-.scanimg{
-  width:200rpx;
-  height:200rpx;
-  margin-bottom: 10rpx;
-}
-
-.icon{
-  width:50rpx;
-  height:50rpx;
-}
-
-.banner {  
-    height: 600rpx;  
-}  
- 
-.scrollers{
+    flex-wrap: wrap;
     width: 100%;
-    height: 100%;
-    overflow-x: hidden;
 }
 
-.active{
-    color:#F65959;
-    border-bottom: 4rpx solid #F65959;
+.menu_item {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 30rpx;
+    box-sizing: border-box;
+    padding-bottom: 10rpx;
+    padding-top: 10rpx;
+    margin-bottom:20rpx;
 }
-swiper{
-  text-align: center;
+.menu_icon {
+    width: 54px;
+    height: 54px;
+    padding-bottom: 5rpx;
 }
-
-/* pages/feedback/feedback.wxss */
-.radio-group {
-    border-bottom: 1rpx solid #ddd;
-    text-align: left;
+.line {
+    height: 1rpx;
+    width:100%;
+    background:#aaa;
+    margin-bottom:30rpx;
 }
-.radio {
-    display: block;
-    border-top: 1rpx solid #ddd;
-    padding: 1rpx;
-}
-
-button {margin: 5rpx;}
