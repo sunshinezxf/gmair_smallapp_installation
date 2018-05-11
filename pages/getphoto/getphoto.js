@@ -30,8 +30,9 @@ Page({
       formData: data,  //其它的表单信息  
       success: function (res) {
         i++
-        var path = res.data;
+        var path = JSON.parse(res.data).data;
         var newPic = [path];
+        console.log("path " + path + " newpic" + newPic)
         if (i == that.data.img_arr.length) {
           //  console.log(res)
           wx.hideLoading({
@@ -40,7 +41,6 @@ Page({
             title: '提示',
             content: '提交成功!',
             success: function (res) {
-              console.log("path " + path + " newpic" + newPic)
               that.setData({
                 'picpath': that.data.picpath.concat(newPic)
               });
@@ -92,30 +92,57 @@ Page({
     console.log("delete" + index);
   },
   upconfirm: function () {
-    //   this.up(0);
     var that = this
-    wx.request({
-      url: 'https://microservice.gmair.net/install-mp/snapshot/create',
-      header: {
-        "Content-Type": "application/x-www-form-urlencoded;"
-      },
-      method: "POST",
-      data: { wechatId: getApp().globalData.openid, qrcode: that.data.qrcode, picPath: that.data.picpath.toString(), access_token: getApp().globalData.token },
+    wx.getLocation({
+      type: 'wgs84',
       success: function (res) {
-        console.log("上传图片参数 picpath" + that.data.picpath.toString());
-        if (res.data.responseCode == "RESPONSE_OK") {
-          console.log("成功保存路径");
-          wx.navigateTo({
-            url: '../index/index',
-          })
-          wx.showToast({
-            title: '提交成功',
-            icon: 'success',
-            duration: 1000
-          })
-        }
+        var latitude = res.latitude
+        var longitude = res.longitude
+        console.log(latitude+" "+longitude)
+        wx.request({
+          url: 'https://microservice.gmair.net/install-mp/snapshot/create',
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded;"
+          },
+          method: "POST",
+          data: { wechatId: getApp().globalData.openid, qrcode: that.data.qrcode, picPath: that.data.picpath.toString(), access_token: getApp().globalData.token, latitude: latitude, longitude: longitude },
+          success: function (res) {
+            console.log("上传图片参数 picpath" + JSON.stringify(that.data.picpath));
+            if (res.data.responseCode == "RESPONSE_OK") {
+              console.log("成功保存路径");
+              wx.navigateTo({
+                url: '../index/index',
+              })
+              wx.showToast({
+                title: '提交成功',
+                icon: 'success',
+                duration: 1000
+              })
+            }else{
+              wx.showToast({
+                title: '提交失败',
+                icon: 'none',
+                duration: 1000
+              })
+            }
+          },fail:function(e){
+            wx.showToast({
+              title: '网络错误！',
+              icon: 'none',
+              duration: 1000
+            })
+          }
+        })
+      },fail:function (e) {
+        wx.showToast({
+          title: '获取地理位置失败，请重新提交',
+          icon: 'none',
+          duration: 1000
+        })
       }
     })
+    //   this.up(0);
+   
   },
   // 预览图片
   previewImg: function (e) {
