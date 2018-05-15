@@ -5,12 +5,32 @@ Page({
     img_arr: [],
     picpath: [],
     qrcode:"",
+    openid: "",
+    token: ""
   },
   onLoad:function(options){
     var that = this
     console.log("传过来的二维码"+options.qrcode);
     that.setData({
       qrcode:options.qrcode
+    })
+    wx.getStorage({
+      key: 'openid',
+      success: function (res) {
+        var openid = res.data;
+        that.setData({
+          openid: openid
+        })
+        wx.getStorage({
+          key: 'token',
+          success: function (res1) {
+            var token = res1.data;
+            that.setData({
+              token: token
+            })
+          },
+        })
+      },
     })
   },
   up: function (i) {
@@ -19,7 +39,7 @@ Page({
     })
     var that = this;
     var data = {
-      access_token: getApp().globalData.token
+      access_token: that.data.token
     }
     // console.log("上传图片token" + getApp().globalData.token)
     wx.uploadFile({
@@ -105,7 +125,7 @@ Page({
             "Content-Type": "application/x-www-form-urlencoded;"
           },
           method: "POST",
-          data: { wechatId: getApp().globalData.openid, qrcode: that.data.qrcode, picPath: that.data.picpath.toString(), access_token: getApp().globalData.token, latitude: latitude, longitude: longitude },
+          data: { wechatId: that.data.openid, qrcode: that.data.qrcode, picPath: that.data.picpath.toString(), access_token: that.data.token, latitude: latitude, longitude: longitude },
           success: function (res) {
             console.log("上传图片参数 picpath" + JSON.stringify(that.data.picpath));
             if (res.data.responseCode == "RESPONSE_OK") {

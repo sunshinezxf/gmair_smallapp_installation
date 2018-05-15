@@ -1,8 +1,8 @@
 App({
   globalData: {
     appid: 'wx95ce2e722268919b',
-    openid:"",
-    token:"",
+    // openid:"",
+    // token:"",
   }, 
   onLaunch: function () {
     wx.login({
@@ -24,8 +24,15 @@ App({
               if(code=="RESPONSE_OK"){
                 var openid = res.data.data;
                 console.log("openid " + openid);
-                var app = getApp()
-                app.globalData.openid = openid;
+               // var app = getApp()
+              //  app.globalData.openid = openid;
+                wx.setStorage({
+                  key: 'openid',
+                  data: openid,
+                  success: function (res) {
+                    console.log('openid存入缓存'+openid)
+                  }
+                })
                 wx.request({
                   url: 'https://microservice.gmair.net/oauth/install/token',
                   header: {
@@ -42,12 +49,22 @@ App({
                   success: function (res) {
                       var token = res.data.access_token;
                       if (token != "" && token != null) {
-                        console.log("token" + token);
-                        var app = getApp()
-                        app.globalData.token = token;
+                        console.log("第一次获取token" + token);
+                       // var app = getApp()
+                        //app.globalData.token = token;
+                        // wx.showToast({
+                        //   title: '跳转中',
+                        // })
+                        wx.setStorage({
+                          key: 'token',
+                          data: token,
+                          success: function (res) {
+                            console.log('token存入缓存'+token)
+                          }
+                        })
                       }else{
-                        var app = getApp()
-                        app.globalData.token = "";
+                        // var app = getApp()
+                        // app.globalData.token = "";
                       }
                     }
                 })

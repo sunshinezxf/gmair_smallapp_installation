@@ -3,6 +3,31 @@ Page({
     show: "",
     scanurl: "",
     qrcode: "",
+    openid: "",
+    token: ""
+  },
+  onLoad: function (options) {
+    var that = this
+    wx.getStorage({
+      key: 'openid',
+      success: function (res) {
+        var openid = res.data;
+        that.setData({
+          openid: openid
+        })
+        wx.getStorage({
+          key: 'token',
+          success: function (res1) {
+            var token = res1.data;
+            console.log("扫描二维码页面 从缓存获取token"+token)
+            that.setData({
+              token: token
+            })
+          },
+        })
+      },
+    })
+
   },
   scanclick: function () {
     var that = this;
@@ -36,6 +61,8 @@ Page({
   },
   scanSubmit: function (e) {
     var that = this;
+    var openid = that.data.openid;
+    var token = that.data.token;
     var value = e.detail.value.scaninput;
     if (value == "") {
       wx.showToast({
@@ -44,16 +71,17 @@ Page({
         duration: 1000
       })
     } else {
-      console.log("token" + getApp().globalData.token + " openid" + getApp().globalData.openid);
+      console.log("扫描二维码获取token" + token + " openid" + openid)
+      console.log("提交二维码token "+token+" 二维码"+value);
       wx.request({
         url: 'https://microservice.gmair.net/install-mp/assign/qrcode',
         header: {
           "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
         },
         method: "GET",
-        data: { qrcode: value, access_token: getApp().globalData.token},
+        data: { qrcode: value, access_token: token},
         success: function (res) {
-          // console.log(JSON.stringify(res));
+          console.log(JSON.stringify(res));
           if (res.data.responseCode == "RESPONSE_OK") {//二维码是存在的
             that.setData({
               qrcode: value
@@ -75,7 +103,7 @@ Page({
                       "Content-Type": "application/x-www-form-urlencoded;"
                     },
                     method: "POST",
-                    data: { wechatId: getApp().globalData.openid, qrcode: value, access_token: getApp().globalData.token},
+                    data: { wechatId: openid, qrcode: value, access_token: token},
                     success: function (res) {
                       that.setData({
                         qrcode: value
