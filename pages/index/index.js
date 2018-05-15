@@ -17,12 +17,12 @@ Page({
         "name": "安装反馈",
         "url": '../image/feedback.png',
         "index": 3
-      },
-      {
-        "name": "第四个",
-        "url": '../image/guidance.png',
-        "index": 4
       }
+      // {
+      //   "name": "第四个",
+      //   "url": '../image/guidance.png',
+      //   "index": 4
+      // }
     ],
 
   },

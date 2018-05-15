@@ -1,12 +1,14 @@
 <view class='container'>
-<view class="txt">请提交反馈</view>
+ <view class="txt">请提交反馈</view> 
     <form bindsubmit="feedSubmit">
       <picker bindchange="bindPickerChange" name="taskPicker" value="{{index}}" range="{{array}}">
+      <text class="page__desc">任务选择</text>
         <view class="picker">
-          任务选择：{{array[index]}}
+          {{array[index]}}
         </view>
       </picker>
-      <input placeholder="电话号码" name="phoneinput" class="input"/> 
+      <text class="page__desc">请输入电话号码</text>
+      <input placeholder="" name="phoneinput" class="input"/> 
       <text class="page__desc">状态</text>
         <radio-group class="radio-group" name="stateRadio" bindchange="radioChange">
           <radio class="radio" wx:for-items="{{items}}" wx:key="name" value="{{item.name}}" checked="{{item.checked}}">

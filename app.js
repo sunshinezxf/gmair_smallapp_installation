@@ -2,7 +2,7 @@ App({
   globalData: {
     appid: 'wx95ce2e722268919b',
     openid:"",
-    token:""
+    token:"",
   }, 
   onLaunch: function () {
     wx.login({
@@ -45,6 +45,9 @@ App({
                         console.log("token" + token);
                         var app = getApp()
                         app.globalData.token = token;
+                      }else{
+                        var app = getApp()
+                        app.globalData.token = "";
                       }
                     }
                 })

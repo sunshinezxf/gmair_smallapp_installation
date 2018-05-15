@@ -2,27 +2,36 @@
   text-align: center
 }
 .txt{
-  margin-top:200rpx;
-  margin-bottom:40rpx;
+  margin-top:100rpx;
+  margin-bottom:20rpx;
+}
+.tsk{
+  text-align: left;
+  margin-bottom:10rpx;
 }
 .picker{
     padding: 5rpx;
     border-bottom:1rpx solid #ddd;
     border-top:1rpx solid #ddd;
     margin-bottom:10rpx;
+    height:60rpx;
 }
 .input{
-  height:80rpx;
+  height:60rpx;
   border-bottom:1rpx solid #ddd;
   border-top:1rpx solid #ddd;
-  margin-bottom:10rpx;
+  margin-bottom:20rpx;
 }
 .radio-group {
     border-bottom: 1rpx solid #ddd;
     text-align: left;
+    font-size:32rpx;
+    margin-bottom: 20rpx;
 }
 .radio {
     display: block;
     border-top: 1rpx solid #ddd;
-    padding: 1rpx;
+    padding-left: 20rpx;
+    height:70rpx;
+    padding-top:10rpx;
 }
