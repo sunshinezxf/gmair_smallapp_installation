@@ -121,10 +121,15 @@ Page({
                 }
               }
             })
-          } else {//不存在
+          } else if (res.data.responseCode == "RESPONSE_ERROR"&&res.data.data!=null){
+            wx.showToast({
+              title: '当前安装任务已分配给其他人员！',
+              duration: 1000
+            })
+          } 
+          else {//不存在
             wx.showToast({
               title: '二维码不存在！',
-              icon: 'loading',
               duration: 1000
             })
           }
