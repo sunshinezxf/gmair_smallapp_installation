@@ -11,6 +11,12 @@
         <image style="width: {{imageWidth}}px; height: {{imageWidth}}px" src="../image/upload.png" class="scanimg" bindtap="upimg" />
       </view>
     </view>
-    <button bindtap="upconfirm">确定</button>  
+        <text class="page__desc">是否配置网络？</text>
+        <radio-group class="radio-group" name="netRadio" bindchange="radioChange">
+          <radio class="radio" wx:for-items="{{items}}" wx:key="name" value="{{item.name}}" checked="{{item.checked}}">
+              <text>{{item.value}}</text>
+            </radio>
+          </radio-group>
+    <button formType="submit">确定</button>  
   </form>
 </view>

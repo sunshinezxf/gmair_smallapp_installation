@@ -33,3 +33,17 @@
 	width: 20px;
 	height: 20px;
 }
+
+.radio-group {
+    border-bottom: 1rpx solid #ddd;
+    text-align: left;
+    font-size:32rpx;
+    margin-bottom: 20rpx;
+}
+.radio {
+    display: block;
+    border-top: 1rpx solid #ddd;
+    padding-left: 20rpx;
+    height:70rpx;
+    padding-top:10rpx;
+}

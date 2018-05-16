@@ -15,6 +15,15 @@ Page({
       { name: '用户要求取消', value: '用户要求取消' },
     ],
   },
+  radioChange: function (e) {
+    console.log('radio发生change事件，携带value值为：', e.detail.value)
+  },
+  bindPickerChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      index: e.detail.value
+    })
+  },
   onLoad: function (options) {
     console.log("onload");
     var that = this

@@ -6,7 +6,14 @@ Page({
     picpath: [],
     qrcode:"",
     openid: "",
-    token: ""
+    token: "",
+    items: [
+      { name: 1, value: '是', checked: 'true' },
+      { name: 0, value: '否', },
+    ]
+  },
+  radioChange: function (e) {
+    console.log('radio发生change事件，携带value值为：', e.detail.value)
   },
   onLoad:function(options){
     var that = this
@@ -111,21 +118,21 @@ Page({
     this.setData({ img_arr: imgs });
     console.log("delete" + index);
   },
-  upconfirm: function () {
+  bindSaveTap: function (e) {
     var that = this
+    console.log("net" + e.detail.value.netRadio)
     wx.getLocation({
       type: 'wgs84',
       success: function (res) {
         var latitude = res.latitude
         var longitude = res.longitude
-        console.log(latitude+" "+longitude)
         wx.request({
           url: 'https://microservice.gmair.net/install-mp/snapshot/create',
           header: {
             "Content-Type": "application/x-www-form-urlencoded;"
           },
           method: "POST",
-          data: { wechatId: that.data.openid, qrcode: that.data.qrcode, picPath: that.data.picpath.toString(), access_token: that.data.token, latitude: latitude, longitude: longitude },
+          data: { wechatId: that.data.openid, qrcode: that.data.qrcode, picPath: that.data.picpath.toString(), access_token: that.data.token, latitude: latitude, longitude: longitude, net: e.detail.value.netRadio},
           success: function (res) {
             console.log("上传图片参数 picpath" + JSON.stringify(that.data.picpath));
             if (res.data.responseCode == "RESPONSE_OK") {
