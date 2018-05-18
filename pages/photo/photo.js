@@ -123,7 +123,7 @@ Page({
             })
           } else if (res.data.responseCode == "RESPONSE_ERROR"&&res.data.data!=null){
             wx.showToast({
-              title: '当前安装任务已分配给其他人员！',
+              title: '已分配给其他人员',
               duration: 1000
             })
           } 
