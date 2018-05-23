@@ -89,39 +89,41 @@ Page({
             wx.navigateTo({
               url: '../getphoto/getphoto?qrcode='+value,
             })
-          } else if (res.data.responseCode == "RESPONSE_NULL") {//带货安装
-            var orderid = res.data.orderid;
-            //console.log("qrcode "+value);
-            wx.showModal({
-              title: '提示',
-              content: '是否是带货安装？',
-              success: function (res) {
-                if (res.confirm) {
-                  wx.request({
-                    url: 'https://microservice.gmair.net/install-mp/assign/withmachine',
-                    header: {
-                      "Content-Type": "application/x-www-form-urlencoded;"
-                    },
-                    method: "POST",
-                    data: { wechatId: openid, qrcode: value, access_token: token},
-                    success: function (res) {
-                      that.setData({
-                        qrcode: value
-                      })
-                      wx.navigateTo({
-                        url: '../getphoto/getphoto?qrcode='+value,
-                      })
-                    }
-                  })
-                } else {
-                  wx.showToast({
-                    title: '请重新扫描二维码',
-                    duration: 1000
-                  })
-                }
-              }
-            })
-          } else if (res.data.responseCode == "RESPONSE_ERROR"&&res.data.data!=null){
+          } 
+          // else if (res.data.responseCode == "RESPONSE_NULL") {//带货安装
+          //   var orderid = res.data.orderid;
+          //   //console.log("qrcode "+value);
+          //   wx.showModal({
+          //     title: '提示',
+          //     content: '是否是带货安装？',
+          //     success: function (res) {
+          //       if (res.confirm) {
+          //         wx.request({
+          //           url: 'https://microservice.gmair.net/install-mp/assign/withmachine',
+          //           header: {
+          //             "Content-Type": "application/x-www-form-urlencoded;"
+          //           },
+          //           method: "POST",
+          //           data: { wechatId: openid, qrcode: value, access_token: token},
+          //           success: function (res) {
+          //             that.setData({
+          //               qrcode: value
+          //             })
+          //             wx.navigateTo({
+          //               url: '../getphoto/getphoto?qrcode='+value,
+          //             })
+          //           }
+          //         })
+          //       } else {
+          //         wx.showToast({
+          //           title: '请重新扫描二维码',
+          //           duration: 1000
+          //         })
+          //       }
+          //     }
+          //   })
+          // }
+           else if (res.data.responseCode == "RESPONSE_ERROR"&&res.data.data!=null){
             wx.showToast({
               title: '已分配给其他人员',
               duration: 1000

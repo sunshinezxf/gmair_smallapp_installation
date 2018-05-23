@@ -13,10 +13,11 @@ Page({
     items: [
       { name: 1, value: '是', checked: 'true' },
       { name: 0, value: '否', },
+    ],
+    ways:[
+      { name: '玻璃', value: '玻璃', checked: 'true' },
+      { name: '墙体', value: '墙体', },
     ]
-  },
-  radioChange: function (e) {
-    console.log('radio发生change事件，携带value值为：', e.detail.value)
   },
   onLoad:function(options){
     var that = this
@@ -126,7 +127,7 @@ Page({
         "Content-Type": "application/x-www-form-urlencoded;"
       },
       method: "POST",
-      data: { wechatId: that.data.openid, qrcode: that.data.qrcode, picPath: that.data.picpath.toString(), access_token: that.data.token, latitude: that.data.latitude, longitude: that.data.longitude, net: e.detail.value.netRadio },
+      data: { wechatId: that.data.openid, qrcode: that.data.qrcode, picPath: that.data.picpath.toString(), access_token: that.data.token, latitude: that.data.latitude, longitude: that.data.longitude, net: e.detail.value.netRadio, installType: e.detail.value.wayRadio },
       success: function (res) {
         console.log("latitude" + that.data.latitude + "longitude" + that.data.longitude);
         console.log("上传图片参数 picpath" + JSON.stringify(that.data.picpath));
@@ -158,7 +159,7 @@ Page({
   },
   bindSaveTap: function (e) {
     var that = this
-    console.log("net" + e.detail.value.netRadio)
+    console.log("net" + e.detail.value.netRadio + " " + e.detail.value.wayRadio)
     var latitude="";
     var longitude="";
     wx.getLocation({
