@@ -35,3 +35,9 @@
     height:70rpx;
     padding-top:10rpx;
 }
+.view_hide{  
+ display: none;  
+}  
+.view_show{  
+ display: block;  
+}  

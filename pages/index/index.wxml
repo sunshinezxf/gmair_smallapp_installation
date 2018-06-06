@@ -9,6 +9,16 @@
         <text class="menu_name">{{menu.name}}</text>
     </view> 
 </view> 
+  <text class="page__desc center">最近任务</text>
+ <view id="panel1" class="flex-column" bindtap="toPhoto">
+    <view class="flex-cell flex-row">
+      <text class="flex-cell flex-row">用户名：王女士</text>
+      <text class="flex-cell flex-row">安装日期：2018-06-20</text>
+    </view>
+    <view class="flex-row flex-cell">
+     <text class="flex-cell flex-row">机器编号：35A108A477465</text>
+    </view> 
+ </view> 
 
  <view class='page__bd page__bd_spacing'>
           <view class='weui-footer weui-footer_fixed-bottom'>

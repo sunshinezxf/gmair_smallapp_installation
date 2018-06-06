@@ -1,0 +1,18 @@
+<view class="txt">已分配任务列表</view> 
+<text class="page__desc">任务1</text>
+<view id="panel" class="flex-column">
+  <view class="flex-cell flex-row">
+    <text class="flex-cell flex-row">用户：王女士</text>
+    <text class="flex-cell flex-row">机器：35A108A477465</text>
+  </view>
+  <view class="flex-row flex-cell">
+       <picker mode="date" value="{{date}}" start="2018-06-01"       bindchange="bindDateChange">  
+        <view>  
+          <text class="link">选择安装日期: {{date}}  </text>
+        </view>  
+      </picker>  
+  </view> 
+   <view class="flex-cell flex-button"> 
+     <button size="mini">保存</button> 
+   </view> 
+</view> 

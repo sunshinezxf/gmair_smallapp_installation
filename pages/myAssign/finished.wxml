@@ -1,0 +1,10 @@
+<view class="center">
+  <view class="circle">
+     <text class="font">20</text> 
+  </view>
+  <view class="circle">
+  <text class="font">20</text> 
+  </view>
+</view>
+
+

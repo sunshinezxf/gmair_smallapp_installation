@@ -17,12 +17,12 @@ Page({
         "name": "安装反馈",
         "url": '../image/feedback.png',
         "index": 3
+      },
+      {
+        "name": "我的任务",
+        "url": '../image/assign.png',
+        "index": 4
       }
-      // {
-      //   "name": "第四个",
-      //   "url": '../image/guidance.png',
-      //   "index": 4
-      // }
     ],
 
   },
@@ -69,7 +69,7 @@ Page({
     }
     else if (i == 4) {
       wx.navigateTo({
-        url: '../photo/photo'
+        url: '../myAssign/myAssign'
       })
     }
    

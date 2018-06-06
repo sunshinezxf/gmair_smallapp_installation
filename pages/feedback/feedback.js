@@ -5,18 +5,20 @@ Page({
     openid: "",
     token: "",
     index: 0,
+    date: '2018-06-01', 
+    showView: true,
     items: [
       { name: '延迟安装', value: '延迟安装', checked: 'true' },
       { name: '取消安装', value: '取消安装', },
     ],
-    reasons: [
-      { name: '和用户协商推迟', value: '和用户协商推迟', checked: 'true' },
-      { name: '用户要求推迟', value: '用户要求推迟' },
-      { name: '用户要求取消', value: '用户要求取消' },
-    ],
+    reasonArr: ['客户无理由退货', '墙体和玻璃都无法安装', '客户不认可安装方式或位置', '安装质量不满意', '产品质量不满意','其他'],
   },
   radioChange: function (e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value)
+    var that = this;
+    that.setData({
+      showView: (!that.data.showView)
+    })  
   },
   bindPickerChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
@@ -24,9 +26,28 @@ Page({
       index: e.detail.value
     })
   },
+  reasonChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      index: e.detail.value
+    })
+  },
+  //  点击日期组件确定事件  
+  bindDateChange: function (e) {
+    this.setData({
+      date: e.detail.value
+    })
+  }, 
   onLoad: function (options) {
     console.log("onload");
+    showView: (options.showView == "true" ? true : false)  
     var that = this
+    var utils = require('../../utils/util.js')
+    var time = utils.formatTime0(new Date());
+    // 再通过setData更改Page()里面的data，动态更新页面的数据  
+    this.setData({
+      date: time
+    });  
     wx.getStorage({
       key: 'openid',
       success: function (res) {
@@ -43,15 +64,14 @@ Page({
             })
             //获取任务列表
             wx.request({
-              url: 'https://microservice.gmair.net/install-mp/assign/feedbacklist',
+              url: 'https://microservice.gmair.net/install-mp/assign/list',
               header: {
                 "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
               },
               method: "GET",
-              data: { wechatId: that.data.openid, access_token: that.data.token },
+              data: { wechatId: that.data.openid, access_token: that.data.token,status:2 },
               success: function (res) {
                 if (res.data.responseCode == "RESPONSE_OK") {
-                  var utils = require('../../utils/util.js')
                   var tmparray = res.data.data;
                   var namearray = [];
                   var assignid_arr = [];
@@ -85,6 +105,11 @@ Page({
         duration: 1000
       })
     }else{
+      if(that.data.showView==true){
+
+      }else{
+
+      }
     wx.request({
       url: 'https://microservice.gmair.net/install-mp/feedback/create',
       header: {

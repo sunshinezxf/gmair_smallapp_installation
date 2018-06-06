@@ -1,0 +1,89 @@
+/* pages/myAssign/myAssign.wxss */
+.swiper-tab{
+    width: 100%;
+    border-bottom: 2rpx solid #ccc;
+    text-align: center;
+    height: 88rpx;
+    line-height: 88rpx;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+.swiper-tab-item{
+    color:#434343;
+    text-align:center;
+    margin-top:5rpx;
+}
+.scrollers{
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+#panel{
+  height:24vh;
+  background:#fff;
+}
+#panel1{
+  height:16vh;
+  background:#fff;
+}
+#panel text{
+  line-height: 8vh;
+}
+#panel1 text{
+  line-height: 8vh;
+}
+.txt{
+  margin-top:10rpx;
+  margin-bottom:20rpx;
+  text-align: center;
+}
+.link{
+  color: #00a0e8;
+  border-bottom: 2rpx solid #00a0e8;
+}
+.active{
+    color:#00a0e8;
+    border-bottom: 2rpx solid #00a0e8;
+}
+
+.flex-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-right: 1rpx solid #ddd;
+  border-bottom: 1rpx solid #ddd;
+}
+.flex-column{
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: stretch;
+}
+.flex-button{
+   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-cell{
+  flex: 1;
+}
+
+.circle {
+width: 150px;
+height: 150px;
+border-radius: 50%; 
+border:5px solid #00a0e8;
+ margin-left: 5%;  
+margin-top:10rpx;
+display: flex; 
+justify-content: center; 
+align-items: center;
+float: left
+}
+.font{
+  font-size: 50px;
+}

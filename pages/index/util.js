@@ -31,3 +31,4 @@ function formatTime(number, format) {
 module.exports = {
   formatTime: formatTime
 }  
+

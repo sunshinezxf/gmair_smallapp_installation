@@ -5,7 +5,8 @@
     "pages/manual/manual",
     "pages/photo/photo",
     "pages/getphoto/getphoto",
-    "pages/feedback/feedback"
+    "pages/feedback/feedback",
+    "pages/myAssign/myAssign"
   ],
   "window": {
     "navigationBarTextStyle": "blue",

@@ -27,3 +27,31 @@
     background:#aaa;
     margin-bottom:30rpx;
 }
+#panel1{
+  height:16vh;
+  background:#fff;
+}
+#panel1 text{
+  line-height: 8vh;
+  border-right: 1rpx solid #ddd;
+  border-bottom: 1rpx solid #ddd;
+}
+.flex-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.flex-column{
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: stretch;
+}
+.flex-cell{
+  flex: 1;
+}
+.center{
+  display: flex;
+  justify-content: center;
+}

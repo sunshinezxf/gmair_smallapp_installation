@@ -1,0 +1,27 @@
+<!--pages/myAssign/myAssign.wxml-->
+ <view class="weui-grids">
+          <view href="javascript:;" class="weui-grid">
+            <view class="swiper-tab-item {{currentTab==0?'active':''}}" data-current="0" bindtap="clickTab">已分配</view>
+            </view>
+            <view href="javascript:;" class="weui-grid">
+           <view class="swiper-tab-item {{currentTab==1?'active':''}}" data-current="1" bindtap="clickTab">进行中</view>
+           </view>
+           <view href="javascript:;" class="weui-grid">
+           <view class="swiper-tab-item {{currentTab==2?'active':''}}" data-current="2" bindtap="clickTab">已结束</view>
+           </view>
+          </view>
+<swiper current="{{currentTab}}" bindchange="swiperTab" style="height:{{clientHeight?clientHeight+'px':'auto'}}">
+    <swiper-item>
+    <scroll-view class='scrollers' scroll-y>
+		<include src="assigned.wxml"/>
+	</scroll-view>
+    </swiper-item>
+   
+    <swiper-item><view>
+    <include src="processing.wxml" />
+    </view></swiper-item>
+
+    <swiper-item><view>
+    <include src="finished.wxml" />
+    </view></swiper-item>
+</swiper>
