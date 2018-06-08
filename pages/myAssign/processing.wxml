@@ -1,23 +1,15 @@
 <view class="txt">进行中任务列表</view> 
+<view wx:for="{{process_name}}">
   <text class="page__desc">任务1</text>
- <view id="panel1" class="flex-column" bindtap="toPhoto">
+ <view id="panel1" class="flex-column" bindtap="toPhoto" data-current="{{index}}">
     <view class="flex-cell flex-row">
-      <text class="flex-cell flex-row">用户名：王女士</text>
-      <text class="flex-cell flex-row">安装日期：2018-06-20</text>
+      <text class="flex-cell flex-row">用户名：{{item}}</text>
+      <text class="flex-cell flex-row">安装日期：{{process_date[index]}}</text>
     </view>
     <view class="flex-row flex-cell">
     <view>
-     <text class="link">机器编号：35A108A477465</text>
+     <text class="link">机器编号：{{process_code[index]}}</text>
      </view>
     </view> 
- </view> 
-  <text class="page__desc">任务2</text>
- <view id="panel1" class="flex-column">
-    <view class="flex-cell flex-row">
-      <text class="flex-cell flex-row">用户名：王女士</text>
-      <text class="flex-cell flex-row">安装日期：2018-06-20</text>
     </view>
-    <view class="flex-row flex-cell">
-      <text class="flex-cell flex-row">机器编号：35A108A477465</text>
-    </view> 
  </view> 

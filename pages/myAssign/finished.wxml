@@ -1,9 +1,9 @@
 <view class="center">
   <view class="circle">
-     <text class="font">20</text> 
+    <text class="font1">已完成 \n {{finished}}</text>
   </view>
   <view class="circle">
-  <text class="font">20</text> 
+  <text class="font1">未完成 \n {{closed}}</text> 
   </view>
 </view>
 

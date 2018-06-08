@@ -76,7 +76,7 @@ Page({
                   var namearray = [];
                   var assignid_arr = [];
                   for (var index in tmparray) {
-                    var time = utils.formatTime(tmparray[index].assignDate / 1000, 'Y/M/D h:m:s')
+                    var time = utils.formatTime(tmparray[index].assignDate / 1000, 'Y/M/D')
                     namearray[index] = tmparray[index].consumerConsignee + " " + time;
                     assignid_arr[index] = tmparray[index].assignId
                   }
@@ -97,53 +97,89 @@ Page({
   feedSubmit: function (e) {
     var that = this
     console.log("feed参数" + that.data.assignArr[e.detail.value.taskPicker]);
-    var phone = e.detail.value.phoneinput;
-    if(phone==""){
-      wx.showToast({
-        title: "请输入电话号码",
-        icon: 'loading',
-        duration: 1000
-      })
-    }else{
+    // var phone = e.detail.value.phoneinput;
+    // if(phone==""){
+    //   wx.showToast({
+    //     title: "请输入电话号码",
+    //     icon: 'loading',
+    //     duration: 1000
+    //   })
+    // }else{
       if(that.data.showView==true){
-
+        console.log('延迟');
+        var date = e.detail.value.datePicker;
+        wx.request({
+          url: 'https://microservice.gmair.net/install-mp/assign/postpone',
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+          },
+          method: "POST",
+          data: { assignId: that.data.assignArr[e.detail.value.taskPicker], date:date, access_token: that.data.token },
+          success: function (res) {
+            if (res.data.responseCode == "RESPONSE_OK") {
+              wx.navigateTo({
+                url: '../index/index',
+              })
+              wx.showToast({
+                title: "反馈成功",
+                icon: 'success',
+                duration: 1000
+              })
+            } else {
+              wx.showToast({
+                title: "反馈失败",
+                icon: 'loading',
+                duration: 1000
+              })
+            }
+          },
+          fail: function () {
+            wx.showToast({
+              title: '服务器网络错误!',
+              icon: 'loading',
+              duration: 1000
+            })
+          }
+        })
       }else{
-
-      }
-    wx.request({
-      url: 'https://microservice.gmair.net/install-mp/feedback/create',
-      header: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
-      },
-      method: "POST",
-      data: { assignId: that.data.assignArr[e.detail.value.taskPicker], memberPhone: e.detail.value.phoneinput, status: e.detail.value.stateRadio, feedbackContent: e.detail.value.reasonRadio, access_token: that.data.token },
-      success: function (res) {
-        if (res.data.responseCode == "RESPONSE_OK") {
-          wx.navigateTo({
-            url: '../index/index',
-          })
-          wx.showToast({
-            title: "反馈成功",
-            icon: 'success',
-            duration: 1000
-          })
-        } else {
-          wx.showToast({
-            title: "反馈失败",
-            icon: 'loading',
-            duration: 1000
-          })
-        }
-      },
-      fail: function () {
-        wx.showToast({
-          title: '服务器网络错误!',
-          icon: 'loading',
-          duration: 1000
+        console.log('取消')
+        var reason = e.detail.value.reasonPicker;
+        wx.request({
+          url: 'https://microservice.gmair.net/install-mp/assign/cancel',
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+          },
+          method: "POST",
+          data: { assignId: that.data.assignArr[e.detail.value.taskPicker], description: reason, access_token: that.data.token },
+          success: function (res) {
+            if (res.data.responseCode == "RESPONSE_OK") {
+              wx.navigateTo({
+                url: '../index/index',
+              })
+              wx.showToast({
+                title: "反馈成功",
+                icon: 'success',
+                duration: 1000
+              })
+            } else {
+              wx.showToast({
+                title: "反馈失败",
+                icon: 'loading',
+                duration: 1000
+              })
+            }
+          },
+          fail: function () {
+            wx.showToast({
+              title: '服务器网络错误!',
+              icon: 'loading',
+              duration: 1000
+            })
+          }
         })
       }
-    })
-    }
+   
+    // }
   },
 
 })

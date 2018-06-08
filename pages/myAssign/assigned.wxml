@@ -1,18 +1,22 @@
 <view class="txt">已分配任务列表</view> 
-<text class="page__desc">任务1</text>
+<form bindsubmit="chooseDate">
+<view wx:for="{{assign_name}}">
+<text class="page__desc">任务{{index+1}}</text>
 <view id="panel" class="flex-column">
   <view class="flex-cell flex-row">
-    <text class="flex-cell flex-row">用户：王女士</text>
-    <text class="flex-cell flex-row">机器：35A108A477465</text>
+    <text class="flex-cell flex-row">用户：{{item}}</text>
+    <text class="flex-cell flex-row">机器：{{assign_code[index]}}</text>
   </view>
   <view class="flex-row flex-cell">
-       <picker mode="date" value="{{date}}" start="2018-06-01"       bindchange="bindDateChange">  
+       <picker mode="date" start="2018-06-01" value="{{date}}" data-current="{{index}}"  bindchange="bindDateChange" name="datePicker">  
         <view>  
-          <text class="link">选择安装日期: {{date}}  </text>
+          <text class="link">选择安装日期 </text>
         </view>  
       </picker>  
   </view> 
-   <view class="flex-cell flex-button"> 
-     <button size="mini">保存</button> 
+   <!-- <view class="flex-cell flex-button"> 
+     <button size="mini" formType="submit">保存</button> 
+   </view> -->
+   </view>
    </view> 
-</view> 
+</form> 

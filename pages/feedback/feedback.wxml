@@ -7,8 +7,8 @@
           {{array[index]}}
         </view>
       </picker>
-      <text class="page__desc">请输入电话号码</text>
-      <input placeholder="" name="phoneinput" class="input"/> 
+      <!-- <text class="page__desc">请输入电话号码</text>
+      <input placeholder="" name="phoneinput" class="input"/>  -->
       <text class="page__desc">状态</text>
         <radio-group class="radio-group" name="stateRadio" bindchange="radioChange">
           <radio class="radio" wx:for-items="{{items}}" wx:key="name" value="{{item.name}}" checked="{{item.checked}}">
@@ -16,7 +16,7 @@
             </radio>
           </radio-group>
   <view class="{{showView?'view_show':'view_hide'}}">
-    <picker mode="date" value="{{date}}" start="2018-06-01" bindchange="bindDateChange">  
+    <picker mode="date" value="{{date}}" start="2018-06-01" bindchange="bindDateChange" name="datePicker">  
      <text class="page__desc">请选择安装日期</text>
     <view class="picker">  
       日期: {{date}}  
@@ -25,7 +25,7 @@
   </view>
   <view class="{{showView?'view_hide':'view_show'}}">
       <text class="page__desc">原因</text>
-        <picker bindchange="reasonChange" name="reasonPicker" value="{{index}}" range="{{reasonArr}}">
+        <picker bindchange="reasonChange" name="reasonPicker" value="{{reasonArr[index]}}" range="{{reasonArr}}">
         <view class="picker">
           {{reasonArr[index]}}
         </view>

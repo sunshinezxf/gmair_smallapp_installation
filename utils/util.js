@@ -28,9 +28,6 @@ function formatTime(number, format) {
   }
   return format;
 }  
-module.exports = {
-  formatTime: formatTime
-}  
 
 function formatTime0(date) {
   var year = date.getFullYear()
@@ -47,4 +44,5 @@ function formatNumber(n) {
 
 module.exports = {
   formatTime0: formatTime0,
+  formatTime: formatTime
 } 
