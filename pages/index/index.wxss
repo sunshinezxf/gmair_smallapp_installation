@@ -33,14 +33,14 @@
 }
 #panel1 text{
   line-height: 8vh;
-  border-right: 1rpx solid #ddd;
-  border-bottom: 1rpx solid #ddd;
 }
 .flex-row{
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  border-right: 1rpx solid #ddd;
+  border-bottom: 1rpx solid #ddd;
 }
 .flex-column{
   display: flex;
@@ -54,4 +54,8 @@
 .center{
   display: flex;
   justify-content: center;
+}
+.link{
+  color: #00a0e8;
+  border-bottom: 2rpx solid #00a0e8;
 }

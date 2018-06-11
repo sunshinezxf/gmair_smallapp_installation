@@ -85,10 +85,12 @@ Page({
                   var assignid_arr = [];
                   var code_arr = [];
                   var date_arr=[];
+                  console.log("processing" + tmparray.length);
                   var utils = require('../../utils/util.js')
                   for (var index in tmparray) {
                     namearray[index] = tmparray[index].consumerConsignee;
                     assignid_arr[index] = tmparray[index].assignId
+                    console.log("pro id"+assignid_arr[index]);
                     code_arr[index] = tmparray[index].codeValue
                     var time = utils.formatTime(tmparray[index].assignDate / 1000, 'Y/M/D')
                     date_arr[index] = time
@@ -142,8 +144,11 @@ Page({
 
   },
   toPhoto:function(e){
+    var current = e.currentTarget.dataset.current;
+    var code = this.data.process_code[current];
+    console.log('to photo code' + code);
     wx.navigateTo({
-      url: '../getphoto/getphoto?qrcode=' + '35A108A477465',
+      url: '../getphoto/getphoto?qrcode=' + code,
     })
   },
   chooseDate:function(e){
