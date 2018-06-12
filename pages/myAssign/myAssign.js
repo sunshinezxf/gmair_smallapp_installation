@@ -18,7 +18,36 @@ Page({
     finished:0,
     closed:0
   },
-
+  getAssigned: function (e) {
+    var that = this
+    wx.request({
+      url: 'https://microservice.gmair.net/install-mp/assign/list',
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+      },
+      method: "GET",
+      data: { wechatId: that.data.openid, access_token: that.data.token, status: 1 },
+      success: function (res) {
+        if (res.data.responseCode == "RESPONSE_OK") {
+          var tmparray = res.data.data;
+          var namearray = [];
+          var assignid_arr = [];
+          var code_arr = [];
+          console.log("array size" + tmparray.length);
+          for (var index in tmparray) {
+            namearray[index] = tmparray[index].consumerConsignee;
+            assignid_arr[index] = tmparray[index].assignId
+            code_arr[index] = tmparray[index].codeValue
+          }
+          that.setData({
+            assign_name: namearray,
+            assign_id: assignid_arr,
+            assign_code: code_arr
+          })
+        }
+      }
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -44,105 +73,87 @@ Page({
             that.setData({
               token: token
             })
-            wx.request({
-              url: 'https://microservice.gmair.net/install-mp/assign/list',
-              header: {
-                "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
-              },
-              method: "GET",
-              data: { wechatId: that.data.openid, access_token: that.data.token, status: 1 },
-              success: function (res) {
-                if (res.data.responseCode == "RESPONSE_OK") {
-                  var tmparray = res.data.data;
-                  var namearray = [];
-                  var assignid_arr = [];
-                  var code_arr=[];
-                  console.log("array size"+tmparray.length);
-                  for (var index in tmparray) {
-                    namearray[index] = tmparray[index].consumerConsignee;
-                    assignid_arr[index] = tmparray[index].assignId
-                    code_arr[index] = tmparray[index].codeValue
-                  }
-                  that.setData({
-                    assign_name: namearray,
-                    assign_id: assignid_arr,
-                    assign_code:code_arr
-                  })
-                }
-              }
-            });
-            wx.request({
-              url: 'https://microservice.gmair.net/install-mp/assign/list',
-              header: {
-                "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
-              },
-              method: "GET",
-              data: { wechatId: that.data.openid, access_token: that.data.token, status: 2 },
-              success: function (res) {
-                if (res.data.responseCode == "RESPONSE_OK") {
-                  var tmparray = res.data.data;
-                  var namearray = [];
-                  var assignid_arr = [];
-                  var code_arr = [];
-                  var date_arr=[];
-                  console.log("processing" + tmparray.length);
-                  var utils = require('../../utils/util.js')
-                  for (var index in tmparray) {
-                    namearray[index] = tmparray[index].consumerConsignee;
-                    assignid_arr[index] = tmparray[index].assignId
-                    console.log("pro id"+assignid_arr[index]);
-                    code_arr[index] = tmparray[index].codeValue
-                    var time = utils.formatTime(tmparray[index].assignDate / 1000, 'Y/M/D')
-                    date_arr[index] = time
-                  }
-                  that.setData({
-                    process_name: namearray,
-                    process_id: assignid_arr,
-                    process_code: code_arr,
-                    process_date:date_arr
-
-                  })
-                }
-              }
-            });
-            wx.request({
-              url: 'https://microservice.gmair.net/install-mp/assign/list',
-              header: {
-                "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
-              },
-              method: "GET",
-              data: { wechatId: that.data.openid, access_token: that.data.token, status: 3 },
-              success: function (res) {
-                if (res.data.responseCode == "RESPONSE_OK") {
-                  var tmparray = res.data.data;
-                  that.setData({
-                    finished:tmparray.length
-                  })
-                }
-              }
-            });
-            wx.request({
-              url: 'https://microservice.gmair.net/install-mp/assign/list',
-              header: {
-                "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
-              },
-              method: "GET",
-              data: { wechatId: that.data.openid, access_token: that.data.token, status: 4 },
-              success: function (res) {
-                if (res.data.responseCode == "RESPONSE_OK") {
-                  var tmparray = res.data.data;
-                  that.setData({
-                    closed: tmparray.length
-                  })
-                }
-              }
-            });
+            that.getAssigned();
           },
         })
       },
     })
 
   },
+ 
+ getProcessing:function(e){
+   var that = this
+   wx.request({
+     url: 'https://microservice.gmair.net/install-mp/assign/list',
+     header: {
+       "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+     },
+     method: "GET",
+     data: { wechatId: that.data.openid, access_token: that.data.token, status: 2 },
+     success: function (res) {
+       if (res.data.responseCode == "RESPONSE_OK") {
+         var tmparray = res.data.data;
+         var namearray = [];
+         var assignid_arr = [];
+         var code_arr = [];
+         var date_arr = [];
+         console.log("processing" + tmparray.length);
+         var utils = require('../../utils/util.js')
+         for (var index in tmparray) {
+           namearray[index] = tmparray[index].consumerConsignee;
+           assignid_arr[index] = tmparray[index].assignId
+           console.log("pro id" + assignid_arr[index]);
+           code_arr[index] = tmparray[index].codeValue
+           var time = utils.formatTime(tmparray[index].assignDate / 1000, 'Y/M/D')
+           date_arr[index] = time
+         }
+         that.setData({
+           process_name: namearray,
+           process_id: assignid_arr,
+           process_code: code_arr,
+           process_date: date_arr
+
+         })
+       }
+     }
+   });
+ },
+ getNum:function(e){
+   var that = this
+   wx.request({
+     url: 'https://microservice.gmair.net/install-mp/assign/list',
+     header: {
+       "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+     },
+     method: "GET",
+     data: { wechatId: that.data.openid, access_token: that.data.token, status: 3 },
+     success: function (res) {
+       if (res.data.responseCode == "RESPONSE_OK") {
+         var tmparray = res.data.data;
+         that.setData({
+           finished: tmparray.length
+         })
+       }
+     }
+   });
+   wx.request({
+     url: 'https://microservice.gmair.net/install-mp/assign/list',
+     header: {
+       "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+     },
+     method: "GET",
+     data: { wechatId: that.data.openid, access_token: that.data.token, status: 4 },
+     success: function (res) {
+       if (res.data.responseCode == "RESPONSE_OK") {
+         var tmparray = res.data.data;
+         that.setData({
+           closed: tmparray.length
+         })
+       }
+     }
+   });
+ },
+
   toPhoto:function(e){
     var current = e.currentTarget.dataset.current;
     var code = this.data.process_code[current];
@@ -161,9 +172,18 @@ Page({
   //滑动切换
   swiperTab: function (e) {
     var that = this;
+    var current = e.detail.current
     that.setData({
       currentTab: e.detail.current
     });
+    console.log('current'+current);
+    if (current == 0) {
+      that.getAssigned();
+    } else if (current == 1) {
+      that.getProcessing();
+    } else if (current == 2) {
+      that.getNum();
+    }
   },
   //点击切换
   clickTab: function (e) {
@@ -171,9 +191,17 @@ Page({
     if (this.data.currentTab === e.target.dataset.current) {
       return false;
     } else {
+      var current = e.target.dataset.current
       that.setData({
-        currentTab: e.target.dataset.current
+        currentTab: current
       })
+     if(current==0){
+       that.getAssigned();
+     }else if(current == 1){
+       that.getProcessing();
+     }else if(current==2){
+       that.getNum();
+     }
     }
   },
   toPhoto:function(e){

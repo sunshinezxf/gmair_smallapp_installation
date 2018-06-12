@@ -34,6 +34,10 @@ Page({
  */
   onLoad: function (options) {
     console.log("onload");
+    
+ 
+  },
+  onShow:function(e){
     var that = this
     wx.getStorage({
       key: 'openid',
@@ -89,7 +93,6 @@ Page({
           });
         }
       })
- 
   },
   changeIndicatorDots: function (e) {
     this.setData({
