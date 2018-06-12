@@ -94,3 +94,6 @@ float: left
   color:#777777;
   text-align: center;
 }
+.container{
+  text-align: center
+}

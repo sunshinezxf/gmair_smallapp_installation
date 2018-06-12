@@ -1,7 +1,8 @@
+<view class='container'>
 <view class="txt">已分配任务列表</view> 
 <form bindsubmit="chooseDate">
 <view wx:for="{{assign_name}}">
-<text class="page__desc">任务{{index+1}}</text>
+<text class="page__desc center">任务{{index+1}}</text>
 <view id="panel" class="flex-column">
   <view class="flex-cell flex-row">
     <text class="flex-cell flex-row">用户：{{item}}</text>
@@ -20,3 +21,4 @@
    </view>
    </view> 
 </form> 
+</view>

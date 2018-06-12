@@ -1,6 +1,7 @@
+<view class='container'>
 <view class="txt">进行中任务列表</view> 
 <view wx:for="{{process_name}}">
-  <text class="page__desc">任务1</text>
+  <text class="page__desc center">任务{{index+1}}</text>
  <view id="panel1" class="flex-column" bindtap="toPhoto" data-current="{{index}}">
     <view class="flex-cell flex-row">
       <text class="flex-cell flex-row">用户名：{{item}}</text>
@@ -13,3 +14,4 @@
     </view> 
     </view>
  </view> 
+ </view>
