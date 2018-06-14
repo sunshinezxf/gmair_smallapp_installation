@@ -145,14 +145,14 @@ Page({
       }else{
         console.log('取消')
         var reason = e.detail.value.reasonPicker;
-        console.log(that.data.assignArr[e.detail.value.taskPicker])
+        console.log(that.data.reasonArr[e.detail.value.taskPicker])
         wx.request({
           url: 'https://microservice.gmair.net/install-mp/assign/cancel',
           header: {
             "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
           },
           method: "POST",
-          data: { assignId: that.data.assignArr[e.detail.value.taskPicker], description: reason, access_token: that.data.token },
+          data: { assignId: that.data.assignArr[e.detail.value.taskPicker], description: that.data.reasonArr[e.detail.value.taskPicker], access_token: that.data.token },
           success: function (res) {
             if (res.data.responseCode == "RESPONSE_OK") {
               wx.navigateTo({
