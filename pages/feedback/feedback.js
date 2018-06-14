@@ -4,7 +4,8 @@ Page({
     assignArr: [],
     openid: "",
     token: "",
-    index: 0,
+    taskindex: 0,
+    reasonindex:0,
     date: '2018-06-01', 
     showView: true,
     items: [
@@ -23,13 +24,13 @@ Page({
   bindPickerChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
-      index: e.detail.value
+      taskindex: e.detail.value
     })
   },
   reasonChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
-      index: e.detail.value
+      reasonindex: e.detail.value
     })
   },
   //  点击日期组件确定事件  
@@ -144,6 +145,7 @@ Page({
       }else{
         console.log('取消')
         var reason = e.detail.value.reasonPicker;
+        console.log(that.data.assignArr[e.detail.value.taskPicker])
         wx.request({
           url: 'https://microservice.gmair.net/install-mp/assign/cancel',
           header: {

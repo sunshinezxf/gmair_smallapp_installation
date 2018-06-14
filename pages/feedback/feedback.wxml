@@ -1,10 +1,10 @@
 <view class='container'>
  <view class="txt">请提交反馈</view> 
     <form bindsubmit="feedSubmit">
-      <picker bindchange="bindPickerChange" name="taskPicker" value="{{index}}" range="{{array}}">
+      <picker bindchange="bindPickerChange" name="taskPicker" value="{{taskindex}}" range="{{array}}">
       <text class="page__desc">任务选择</text>
         <view class="picker">
-          {{array[index]}}
+          {{array[taskindex]}}
         </view>
       </picker>
       <!-- <text class="page__desc">请输入电话号码</text>
@@ -25,9 +25,9 @@
   </view>
   <view class="{{showView?'view_hide':'view_show'}}">
       <text class="page__desc">原因</text>
-        <picker bindchange="reasonChange" name="reasonPicker" value="{{reasonArr[index]}}" range="{{reasonArr}}">
+        <picker bindchange="reasonChange" name="reasonPicker" value="{{reasonindex}}" range="{{reasonArr}}">
         <view class="picker">
-          {{reasonArr[index]}}
+          {{reasonArr[reasonindex]}}
         </view>
       </picker>
 
