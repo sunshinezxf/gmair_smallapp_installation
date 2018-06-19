@@ -12,16 +12,18 @@
           </view>
 <swiper current="{{currentTab}}" bindchange="swiperTab" style="height:{{clientHeight?clientHeight+'px':'auto'}}">
     <swiper-item>
-    <scroll-view class='scrollers' scroll-y>
+    <scroll-view class="scrollers" scroll-y="true">
 		<include src="assigned.wxml"/>
 	</scroll-view>
     </swiper-item>
    
-    <swiper-item><view>
+    <swiper-item  class='scrollers'>
+<scroll-view  class="scrollers"  scroll-y="true">
     <include src="processing.wxml" />
-    </view></swiper-item>
+    </scroll-view></swiper-item>
 
-    <swiper-item><view>
+    <swiper-item class='scrollers' >
+    <scroll-view  class="scrollers" scroll-y="true">
     <include src="finished.wxml" />
-    </view></swiper-item>
+    </scroll-view></swiper-item>
 </swiper>

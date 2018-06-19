@@ -126,12 +126,14 @@ Page({
            else if (res.data.responseCode == "RESPONSE_ERROR"&&res.data.data!=null){
             wx.showToast({
               title: '已分配给其他人员',
+              icon: 'none',
               duration: 1000
             })
           } 
           else {//不存在
             wx.showToast({
               title: '二维码不存在！',
+              icon: 'none',
               duration: 1000
             })
           }

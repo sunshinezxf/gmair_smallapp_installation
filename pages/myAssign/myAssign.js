@@ -44,6 +44,13 @@ Page({
             assign_id: assignid_arr,
             assign_code: code_arr
           })
+          console.log('assing_name length'+that.data.assign_name.length);
+        } else if (res.data.responseCode == "RESPONSE_NULL"){
+          that.setData({
+            assign_name: [],
+            assign_id: [],
+            assign_code: []
+          })
         }
       }
     });
@@ -59,6 +66,7 @@ Page({
     this.setData({
       date: time
     });  
+    console.log('调用onload方法')
     wx.getStorage({
       key: 'openid',
       success: function (res) {
@@ -114,7 +122,14 @@ Page({
            process_date: date_arr
 
          })
-       }
+       } else if (res.data.responseCode == "RESPONSE_NULL") {
+         that.setData({
+           process_name: [],
+           process_id: [],
+           process_code: [],
+           process_date: []
+         })
+     }
      }
    });
  },
@@ -230,10 +245,11 @@ Page({
       data: { assignId: assignId, access_token: that.data.token, installDate: date },
       success: function (res) {
         if (res.data.responseCode == "RESPONSE_OK") {
+          // that.onLoad();
+          // wx.showToast({
+          //   title: '选择成功',
+          // })
           that.onLoad();
-    wx.showToast({
-      title: '选择成功',
-    })
         }else{
           wx.showToast({
             title: '修改失败',
