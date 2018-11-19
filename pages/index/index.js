@@ -34,8 +34,6 @@ Page({
  */
   onLoad: function (options) {
     console.log("onload");
-    
- 
   },
   onShow:function(e){
     var that = this

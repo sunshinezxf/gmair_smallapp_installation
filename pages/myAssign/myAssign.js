@@ -16,7 +16,8 @@ Page({
     process_code: [],
     process_date:[],
     finished:0,
-    closed:0
+    closed:0,
+    assign_list: []
   },
   getAssigned: function (e) {
     var that = this
@@ -42,14 +43,15 @@ Page({
           that.setData({
             assign_name: namearray,
             assign_id: assignid_arr,
-            assign_code: code_arr
+            assign_code: code_arr,
+            assign_list: res.data.data
           })
-          console.log('assing_name length'+that.data.assign_name.length);
         } else if (res.data.responseCode == "RESPONSE_NULL"){
           that.setData({
             assign_name: [],
             assign_id: [],
-            assign_code: []
+            assign_code: [],
+            assign_list: []
           })
         }
       }
@@ -60,7 +62,7 @@ Page({
    */
   onLoad: function (options) {
     var that = this
-    var utils = require('../../utils/util.js')
+    let utils = require('../../utils/util.js')
     var time = utils.formatTime0(new Date());
     // 再通过setData更改Page()里面的data，动态更新页面的数据  
     this.setData({
@@ -88,7 +90,37 @@ Page({
     })
 
   },
- 
+ assign_list: function(status) {
+   let that = this;
+   wx.request({
+     url: 'https://microservice.gmair.net/install-mp/assign/list',
+     header: {
+       "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+     },
+     method: "GET",
+     data: { wechatId: that.data.openid, access_token: that.data.token, status: status },
+     success: function(res) {
+       res = res.data;
+       if(res.responseCode == 'RESPONSE_OK') {
+        let assign_list = res.data;
+        let utils = require('../../utils/util.js')
+        for(let i = 0; i < res.data.length; i ++) {
+          let date = utils.formatTime(res.data[i].assignDate / 1000, 'Y-M-D');
+          assign_list[i].createAt = date;
+          console.log("[date]" + date)
+          console.log(JSON.stringify(assign_list[i]))
+        }
+         that.setData({
+           assign_list: assign_list
+         });
+       }else {
+         that.setData({
+           assign_list: []
+         })
+       }
+     }
+   })
+ },
  getProcessing:function(e){
    var that = this
    wx.request({
@@ -119,15 +151,24 @@ Page({
            process_name: namearray,
            process_id: assignid_arr,
            process_code: code_arr,
-           process_date: date_arr
-
+           process_date: date_arr,
+           assign_list: res.data.data
          })
+         let assign_list = res.data;
+         for (let i = 0; i < res.data.length; i++) {
+           let date = utils.formatTime(res.data[i].assignDate / 1000, 'Y/M/D');
+           assign_list[i].createAt = date;
+         }
+         that.setData({
+           assign_list: assign_list
+         });
        } else if (res.data.responseCode == "RESPONSE_NULL") {
          that.setData({
            process_name: [],
            process_id: [],
            process_code: [],
-           process_date: []
+           process_date: [],
+           assign_list: []
          })
      }
      }
@@ -215,7 +256,7 @@ Page({
      }else if(current == 1){
        that.getProcessing();
      }else if(current==2){
-       that.getNum();
+       that.assign_list(3);
      }
     }
   },

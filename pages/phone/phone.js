@@ -17,7 +17,6 @@ Page({
           key: 'token',
           success: function(res1) {
             var token = res1.data;
-            console.log("phone页面openid"+openid+"phone页面token值 "+token)
             that.setData({
               token:token
             })

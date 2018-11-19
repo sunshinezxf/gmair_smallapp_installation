@@ -1,9 +1,9 @@
 <view class="center">
-  <view class="circle">
-    <text class="font1">已完成 \n {{finished}}</text>
-  </view>
-  <view class="circle">
-  <text class="font1">未完成 \n {{closed}}</text> 
+  <view wx:for="{{assign_list}}" wx:key="{{item.assignId}}">
+    <view class="flex-cell flex-row">
+      <view class='flex-cell flex-row'>{{item.codeValue}}</view>
+      <view class='flex-cell flex-row'>{{item.createAt}}</view>
+    </view>
   </view>
 </view>
 

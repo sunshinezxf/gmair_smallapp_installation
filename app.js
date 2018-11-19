@@ -1,14 +1,12 @@
 App({
   globalData: {
-    appid: 'wx95ce2e722268919b',
-    // openid:"",
-    // token:"",
+    appid: 'wx95ce2e722268919b'
   }, 
   onLaunch: function () {
+    //APP启动时，会首先调用login接口获取用户的code，根据code换取用户的openid
     wx.login({
       success: function (res) {
         if (res.code) {
-          console.log('登录成功'+res.code);
           //发起网络请求,将code发送到服务端
           wx.request({
             url: 'https://microservice.gmair.net/auth/install/openid',
@@ -21,16 +19,12 @@ App({
             },
             success: function (res) {
               var code = res.data.responseCode;
-              if(code=="RESPONSE_OK"){
+              if(code == "RESPONSE_OK"){
                 var openid = res.data.data;
-                console.log("openid " + openid);
-               // var app = getApp()
-              //  app.globalData.openid = openid;
                 wx.setStorage({
                   key: 'openid',
                   data: openid,
                   success: function (res) {
-                    console.log('openid存入缓存'+openid)
                   }
                 })
                 wx.request({
@@ -49,12 +43,6 @@ App({
                   success: function (res) {
                       var token = res.data.access_token;
                       if (token != "" && token != null) {
-                        console.log("第一次获取token" + token);
-                       // var app = getApp()
-                        //app.globalData.token = token;
-                        // wx.showToast({
-                        //   title: '跳转中',
-                        // })
                         wx.setStorage({
                           key: 'token',
                           data: token,
@@ -65,6 +53,7 @@ App({
                       }else{
                         // var app = getApp()
                         // app.globalData.token = "";
+                        console.log('登录失败！' + res.errMsg)
                       }
                     }
                 })
@@ -80,10 +69,10 @@ App({
     });
   },
   onShow: function () {
-    console.log('App Show')
+    
   },
   onHide: function () {
-    console.log('App Hide')
+    
   },
   globalData: {
     hasLogin: false

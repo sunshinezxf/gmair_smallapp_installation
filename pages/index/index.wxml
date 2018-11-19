@@ -1,40 +1,34 @@
-    <view class='page__hd'>
-      <view class='page__title'>果麦新风</view>
-      <view class='page__desc'>安装小助手,为您提供安装指引和信息采集服务.</view>
-    </view>
+<view class='page__hd'>
+  <view class='page__title'>果麦新风</view>
+  <view class='page__desc'>安装小助手,为您提供安装指引和信息采集服务.</view>
+</view>
 <view class="line"></view>
-      <view class="menu_container">
-    <view class="menu_item" wx:for="{{menus}}" wx:for-index="idx" wx:for-item="menu" wx:key="id">
-        <image class="menu_icon" src="{{menu.url}}" data-current="{{menu.index}}" bindtap="jump"/>
-        <text class="menu_name">{{menu.name}}</text>
-    </view> 
+<view class="menu_container">
+  <view class="menu_item" wx:for="{{menus}}" wx:for-index="idx" wx:for-item="menu" wx:key="id">
+    <image class="menu_icon" src="{{menu.url}}" data-current="{{menu.index}}" bindtap="jump"/>
+    <text class="menu_name">{{menu.name}}</text>
+  </view> 
 </view> 
-
 <text class="page__desc center">最近任务</text>
-<swiper indicator-dots="true"
-  autoplay="true" interval="5000" duration="1000">
+<swiper indicator-dots="true" autoplay="true" interval="5000" duration="1000">
   <block wx:for="{{process_name}}">
     <swiper-item>
-       <view id="panel1" class="flex-column" bindtap="toPhoto" data-current="{{index}}">
-    <view class="flex-cell flex-row">
-      <text class="flex-cell flex-row">用户名：{{item}}</text>
-      <text class="flex-cell flex-row">安装日期：{{process_date[index]}}</text>
-    </view>
-    <view class="flex-row flex-cell">
-    <view>
-     <text class="link">机器编号：{{process_code[index]}}</text>
-     </view>
-    </view> 
-    </view>
+      <view id="panel1" class="flex-column" bindtap="toPhoto" data-current="{{index}}">
+        <view class="flex-cell flex-row">
+          <text class="flex-cell flex-row">用户名：{{item}}</text>
+          <text class="flex-cell flex-row">安装日期：{{process_date[index]}}</text>
+        </view>
+        <view class="flex-row flex-cell">
+          <view>
+            <text class="link">机器编号：{{process_code[index]}}</text>
+          </view>
+        </view> 
+      </view>
     </swiper-item>
   </block>
 </swiper>
-
-  
-
-
- <view class='page__bd page__bd_spacing'>
-          <view class='weui-footer weui-footer_fixed-bottom'>
-              <view class='weui-footer__text'>Copyright © 江苏果麦环保科技有限公司</view>
-          </view>
-      </view>
+<view class='page__bd page__bd_spacing'>
+  <view class='weui-footer weui-footer_fixed-bottom'>
+    <view class='weui-footer__text'>Copyright © 江苏果麦环保科技有限公司</view>
+  </view>
+</view>
