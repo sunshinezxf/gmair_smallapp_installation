@@ -8,8 +8,9 @@
       <text class="flex-cell flex-row">安装日期：{{process_date[index]}}</text>
     </view>
     <view class="flex-row flex-cell">
-    <view>
-     <text class="link">机器编号：{{process_code[index]}}</text>
+    <view> 
+    <text wx:if="{{process_code[index] == null}}">机器编号：未指定</text>
+    <text wx:if="{{process_code[index] != null}}">{{process_code[index]}}</text>
      </view>
     </view> 
     </view>

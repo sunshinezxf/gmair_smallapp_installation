@@ -9,19 +9,14 @@ Page({
         "index":1
       },
       {
-        "name": "图片采集",
-        "url": '../image/collect.png',
-        "index": 2
-      },
-      {
         "name": "安装反馈",
         "url": '../image/feedback.png',
-        "index": 3
+        "index": 2
       },
       {
         "name": "我的任务",
         "url": '../image/assign.png',
-        "index": 4
+        "index": 3
       }
     ],
     process_name: [],
@@ -114,10 +109,9 @@ Page({
   },
   toPhoto: function (e) {
     var current = e.currentTarget.dataset.current;
-   var code = this.data.process_code[current];
-   console.log('to photo code'+code);
+    var assign = this.data.process_id[current];
     wx.navigateTo({
-      url: '../getphoto/getphoto?qrcode=' + code,
+      url: '../photo/photo?assign=' + assign,
     })
   },
   jump: function (e) {
@@ -128,17 +122,12 @@ Page({
         url: '../manual/manual'
       })
     }
-    else if(i==2){
-      wx.navigateTo({
-        url: '../photo/photo'
-      })
-    } 
-    else if (i == 3) {
+    else if (i == 2) {
       wx.navigateTo({
         url: '../feedback/feedback'
       })
     }
-    else if (i == 4) {
+    else if (i == 3) {
       wx.navigateTo({
         url: '../myAssign/myAssign'
       })

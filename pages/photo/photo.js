@@ -4,10 +4,13 @@ Page({
     scanurl: "",
     qrcode: "",
     openid: "",
-    token: ""
+    token: "",
+    assign: ''
   },
   onLoad: function (options) {
     var that = this
+    let assign = options.assign;
+    this.setData({assign: assign});
     wx.getStorage({
       key: 'openid',
       success: function (res) {
@@ -97,16 +100,16 @@ Page({
       })
     } else {
       wx.request({
-        url: 'https://microservice.gmair.net/install-mp/assign/create',
+        url: 'https://microservice.gmair.net/install-mp/assign/submit',
         header: {
           "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
         },
         method: 'POST',
-        data: {access_token: token, openId: openid, codeValue: that.data.qrcode},
+        data: { access_token: token, openId: openid, codeValue: value, assignId: that.data.assign},
         success: function(res) {
           res = res.data
           wx.navigateTo({
-            url: '../getphoto/getphoto?qrcode=' + that.data.qrcode,
+            url: '../getphoto/getphoto?qrcode=' + value,
           })
         },
         fail: function(res) {

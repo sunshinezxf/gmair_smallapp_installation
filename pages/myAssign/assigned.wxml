@@ -8,6 +8,9 @@
     <text class="flex-cell flex-row">用户：{{item}}</text>
     <text class="flex-cell flex-row">机器：{{assign_code[index]}}</text>
   </view>
+  <view class='flex-cell flex-row'>
+    {{address_list[index]}}
+  </view>
   <view class="flex-row flex-cell">
        <picker mode="date" start="2018-06-01" value="{{date}}" data-current="{{index}}"  bindchange="bindDateChange" name="datePicker">  
         <view>  

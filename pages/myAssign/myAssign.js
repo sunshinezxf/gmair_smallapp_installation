@@ -34,24 +34,28 @@ Page({
           var namearray = [];
           var assignid_arr = [];
           var code_arr = [];
+          let address_list = [];
           console.log("array size" + tmparray.length);
           for (var index in tmparray) {
             namearray[index] = tmparray[index].consumerConsignee;
             assignid_arr[index] = tmparray[index].assignId
             code_arr[index] = tmparray[index].codeValue
+            address_list[index] = tmparray[index].consumerAddress
           }
           that.setData({
             assign_name: namearray,
             assign_id: assignid_arr,
             assign_code: code_arr,
-            assign_list: res.data.data
+            assign_list: res.data.data,
+            address_list: address_list
           })
         } else if (res.data.responseCode == "RESPONSE_NULL"){
           that.setData({
             assign_name: [],
             assign_id: [],
             assign_code: [],
-            assign_list: []
+            assign_list: [],
+            address_list: []
           })
         }
       }
@@ -137,6 +141,7 @@ Page({
          var assignid_arr = [];
          var code_arr = [];
          var date_arr = [];
+         let address_list = [];
          console.log("processing" + tmparray.length);
          var utils = require('../../utils/util.js')
          for (var index in tmparray) {
@@ -146,13 +151,15 @@ Page({
            code_arr[index] = tmparray[index].codeValue
            var time = utils.formatTime(tmparray[index].assignDate / 1000, 'Y/M/D')
            date_arr[index] = time
+           address_list[index] = tmparray[index].consumerAddress
          }
          that.setData({
            process_name: namearray,
            process_id: assignid_arr,
            process_code: code_arr,
            process_date: date_arr,
-           assign_list: res.data.data
+           assign_list: res.data.data,
+           address_list: address_list
          })
          let assign_list = res.data;
          for (let i = 0; i < res.data.length; i++) {
@@ -168,7 +175,8 @@ Page({
            process_id: [],
            process_code: [],
            process_date: [],
-           assign_list: []
+           assign_list: [],
+           address_list: []
          })
      }
      }
@@ -212,10 +220,10 @@ Page({
 
   toPhoto:function(e){
     var current = e.currentTarget.dataset.current;
-    var code = this.data.process_code[current];
+    let assign = this.data.process_id[current]
     console.log('to photo code' + code);
     wx.navigateTo({
-      url: '../getphoto/getphoto?qrcode=' + code,
+      url: '../photo/photo?assign=' + assign,
     })
   },
   chooseDate:function(e){
@@ -263,11 +271,9 @@ Page({
   toPhoto:function(e){
     var that = this;
     const index = e.currentTarget.dataset.current
-    var code_arr = that.data.process_code;
-    var code = code_arr[index];
-    console.log(code)
+    let assign = that.data.process_id[index];
     wx.navigateTo({
-      url: '../getphoto/getphoto?qrcode=' + code,
+      url: '../photo/photo?assign=' + assign,
     })
   },
   bindDateChange: function (e) {
